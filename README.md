@@ -6,21 +6,19 @@ To understand the system design please go through the [Link](./docs/DEISGN.md)
 ### docs
 Includes documentations, visual representations and [Design Document](./docs/DEISGN.md).
 
-### frontend 
+### frontend
 Includes the front end project.
 
 ### backend
-
-Includes the backend project.
+Includes the backend [project](./backend/README.md).
 
 ## Roadmap
 
-
 - [x] Design the system
-- [x] Broke the task into smaller tasks based on the
+- [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md).
 
 **Backend Tasks**
-- [ ] Setup Backend project
+- [x] Setup Backend project
 - [ ] Create `file-upload` custom middleware
 - [ ] Create `/files/upload` API and S3Service
 - [ ] Create initial Database models
