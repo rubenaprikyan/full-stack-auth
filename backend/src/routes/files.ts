@@ -1,8 +1,8 @@
-import express, { Response } from 'express';
+import express from 'express';
 
 import FilesController from '../controllers/FilesController';
-import fileUpload, { RequestWithFiles } from '../modules/file-upload';
-import throwable from '../modules/exceptions/throwable';
+import fileUpload from '../modules/file-upload';
+import throwable, { ContextWithFiles } from '../modules/exceptions/throwable';
 
 const RESOURCE_NAME = '/files';
 const router = express.Router();
@@ -18,9 +18,9 @@ const upload = fileUpload({
 router.post(
   '/upload',
   upload,
-  throwable(async (req: RequestWithFiles, res: Response) => {
-    const result = await fileController.upload(req.files);
-    res.status(200).json({ data: result });
+  throwable(async (ctx: ContextWithFiles) => {
+    const result = await fileController.upload(ctx.req.files);
+    ctx.res.status(200).json({ data: result });
   }),
 );
 
