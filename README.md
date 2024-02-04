@@ -25,12 +25,12 @@ Includes the backend [project](./backend/README.md).
 
 - [x] Setup Backend project
 - [x] Create `file-upload` custom module ([documentation](./backend/src/modules/file-upload/README.md))
-- [ ] Create `/files/upload` API and S3Service
+- [x] Create `/api/files/upload` API and S3 files management [PR #3](https://github.com/rubenaprikyan/auth-task/pull/4)
 - [ ] Create initial Database models
-- [ ] Create `/users/register` API and registration logic
+- [ ] Create `/api/users/register` API and registration logic
 - [ ] Create authentication middleware and AuthService
-- [ ] Create `/users/login` API and login logic
-- [ ] Create `/users/me` API
+- [ ] Create `/api/users/login` API and login logic
+- [ ] Create `/api/users/me` API
 - [ ] Cleanup project and documentation
 
 **Frontend Tasks**
