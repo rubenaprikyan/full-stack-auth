@@ -1,15 +1,19 @@
 # auth-task
+
 To understand the system design please go through the [Link](./docs/DEISGN.md)
 
 ## Project Folders Structure
 
 ### docs
+
 Includes documentations, visual representations and [Design Document](./docs/DEISGN.md).
 
 ### frontend
+
 Includes the front end project.
 
 ### backend
+
 Includes the backend [project](./backend/README.md).
 
 ## Roadmap
@@ -18,8 +22,9 @@ Includes the backend [project](./backend/README.md).
 - [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md).
 
 **Backend Tasks**
+
 - [x] Setup Backend project
-- [ ] Create `file-upload` custom middleware
+- [ ] Create `file-upload` custom module
 - [ ] Create `/files/upload` API and S3Service
 - [ ] Create initial Database models
 - [ ] Create `/users/register` API and registration logic
@@ -29,6 +34,7 @@ Includes the backend [project](./backend/README.md).
 - [ ] Cleanup project and documentation
 
 **Frontend Tasks**
+
 - [ ] Setup Frontend project
 - [ ] Setup component library and general styles
 - [ ] Create Form related components UI
