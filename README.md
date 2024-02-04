@@ -17,7 +17,7 @@ Includes the backend project.
 
 
 - [x] Design the system
-- [x] Broke the task into smaller tasks based on the
+- [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md).
 
 **Backend Tasks**
 - [ ] Setup Backend project
