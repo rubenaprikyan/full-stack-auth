@@ -24,7 +24,7 @@ app.get('/ping', (req, res) => {
  */
 app.use(errorHandler);
 
-app.post('/files/upload', fileUpload({}), (req: RequestWithFiles, res) => {
+app.post('/files/upload', fileUpload(), (req: RequestWithFiles, res) => {
   console.log(req.files);
   res.status(200).json({});
 });

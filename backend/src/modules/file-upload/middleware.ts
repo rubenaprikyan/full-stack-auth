@@ -4,6 +4,7 @@ import FileUploader from './FileUploader';
 
 import { createOptions, invariant } from './utils';
 import { Options, RequestWithFiles } from './types';
+import { ERROR_DETAILS } from './errors';
 
 function middleware(
   req: Request,
@@ -17,20 +18,32 @@ function middleware(
     const reqWithFiles = req as RequestWithFiles;
     const uploader = new FileUploader({ req: reqWithFiles, res, next }, opts);
 
-    const bb = busboy({ headers: req.headers });
+    const bb = busboy({
+      headers: req.headers,
+      limits: {
+        files: options.maxFilesCount,
+        fileSize: options.maxFileSize,
+      },
+    });
     const fileEventHandler = (name, fileStream, info): void => {
       const part = { name, fileStream, info };
       uploader.addPart(part);
     };
 
+    // Single file part reader
     bb.on('file', fileEventHandler);
+
+    // Handling files count limit
     bb.on('filesLimit', info => {
-      uploader.abortRequestWithError('FILES_COUNT_LIMIT', info);
+      uploader.abortRequestWithError(ERROR_DETAILS.FILES_COUNT_LIMIT_ERROR.debug, info);
     });
 
+    // Handling close multipart/form-data stream
     bb.on('close', () => {
       invariant('Done parsing form!');
       uploader.release();
+
+      // unpiping the stream for garbage collection
       req.unpipe(bb);
       next();
     });

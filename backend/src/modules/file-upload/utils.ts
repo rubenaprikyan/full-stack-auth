@@ -1,9 +1,9 @@
 import { Options } from './types';
 
 const DEFAULT_OPTIONS: Options = {
-  fileCount: 1,
-  fileSize: 1024 * 1024, // 1mb
-  allowedTypes: ['images/jpeg', 'images/jpg', 'images/png'],
+  maxFilesCount: 1,
+  maxFileSize: 1024 * 1024, // 1mb
+  allowedMediaTypes: ['images/jpeg', 'images/jpg', 'images/png'],
 };
 
 const isDevelopment = process.env.NODE_ENV === 'development';
@@ -16,9 +16,9 @@ const isDevelopment = process.env.NODE_ENV === 'development';
  */
 export function createOptions(options: Options): Options {
   return {
-    allowedTypes: options.allowedTypes || DEFAULT_OPTIONS.allowedTypes,
-    fileCount: options.fileCount || DEFAULT_OPTIONS.fileCount,
-    fileSize: options.fileSize || DEFAULT_OPTIONS.fileSize,
+    allowedMediaTypes: options.allowedMediaTypes || DEFAULT_OPTIONS.allowedMediaTypes,
+    maxFilesCount: options.maxFilesCount || DEFAULT_OPTIONS.maxFilesCount,
+    maxFileSize: options.maxFileSize || DEFAULT_OPTIONS.maxFileSize,
   };
 }
 

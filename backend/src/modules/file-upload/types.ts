@@ -37,16 +37,16 @@ export type Options = {
   /**
    * size of the file in BYTES
    */
-  fileSize?: number;
+  maxFileSize?: number;
   /**
    * files count
    */
-  fileCount?: number;
+  maxFilesCount?: number;
   /**
-   * allowed types
+   * allowed media types
    * ex. ['image/jpeg']
    */
-  allowedTypes?: FileTypes;
+  allowedMediaTypes?: FileTypes;
 };
 
 /**
