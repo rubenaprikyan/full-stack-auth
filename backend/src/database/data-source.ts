@@ -1,4 +1,8 @@
 import { DataSource } from 'typeorm';
+import { Client } from './entities/Client';
+import { UserAuthSession } from './entities/UserAuthSession';
+import { Photo } from './entities/Photo';
+import { User } from './entities/User';
 
 /**
  * Singleton Class For DataSource
@@ -20,7 +24,7 @@ class CustomDataSource {
       ...config,
       synchronize: true,
       logging: true,
-      entities: [],
+      entities: [User, Client, UserAuthSession, Photo],
     });
 
     return CustomDataSource.instance;
