@@ -24,7 +24,7 @@ Includes the backend [project](./backend/README.md).
 **Backend Tasks**
 
 - [x] Setup Backend project
-- [ ] Create `file-upload` custom module
+- [x] Create `file-upload` custom module ([documentation](./backend/src/modules/file-upload/README.md))
 - [ ] Create `/files/upload` API and S3Service
 - [ ] Create initial Database models
 - [ ] Create `/users/register` API and registration logic
