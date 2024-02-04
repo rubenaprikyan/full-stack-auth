@@ -13,6 +13,7 @@ npm install
 ```
 
 ### Run database instance
+
 Make sure you have docker installed on your machine
 
 ```bash
