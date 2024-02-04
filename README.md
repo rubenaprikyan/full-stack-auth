@@ -18,14 +18,14 @@ Includes the backend [project](./backend/README.md).
 
 ## Roadmap
 
-- [x] Design the system
-- [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md).
+- [x] Design the system [PR #1](https://github.com/rubenaprikyan/auth-task/pull/1)
+- [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md). [Commit](https://github.com/rubenaprikyan/auth-task/commit/64014de75f23765052037df486e7c734dd73afda)
 
 **Backend Tasks**
 
-- [x] Setup Backend project
-- [x] Create `file-upload` custom module ([documentation](./backend/src/modules/file-upload/README.md))
-- [x] Create `/api/files/upload` API and S3 files management [PR #3](https://github.com/rubenaprikyan/auth-task/pull/4)
+- [x] Setup Backend project [PR #2](https://github.com/rubenaprikyan/auth-task/pull/2)
+- [x] Create `file-upload` custom module ([documentation](./backend/src/modules/file-upload/README.md)) [PR #3](https://github.com/rubenaprikyan/auth-task/pull/3)
+- [x] Create `/api/files/upload` API and S3 files management [PR #4](https://github.com/rubenaprikyan/auth-task/pull/4)
 - [ ] Create initial Database models
 - [ ] Create `/api/users/register` API and registration logic
 - [ ] Create authentication middleware and AuthService
