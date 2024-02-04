@@ -4,6 +4,7 @@ import CustomDataSource from './database/data-source';
 import errorHandler from './middlewares/errorHandler';
 
 import { dbConfig, serverConfig } from './config';
+import fileUpload, { RequestWithFiles } from './modules/file-upload';
 
 const app = express();
 const AppDataSource = CustomDataSource.getInstance(dbConfig);
@@ -22,6 +23,11 @@ app.get('/ping', (req, res) => {
  * Error handler
  */
 app.use(errorHandler);
+
+app.post('/files/upload', fileUpload({}), (req: RequestWithFiles, res) => {
+  console.log(req.files);
+  res.status(200).json({});
+});
 
 AppDataSource.initialize()
   .then(async () => {
