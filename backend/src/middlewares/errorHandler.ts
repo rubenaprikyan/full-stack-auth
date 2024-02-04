@@ -1,5 +1,41 @@
 import express from 'express';
-import { BaseError } from '../modules/exceptions';
+import { BadRequest, BaseError, InternalServerError } from '../modules/exceptions';
+import { ERROR_DETAILS, FileUploadException } from '../modules/file-upload';
+import { UnsupportedMediaType } from '../modules/exceptions/UnsupportedMediaType';
+
+function normalizeError(err): BaseError {
+  // if its already normalized error, just return
+  if (err instanceof BaseError) {
+    return err;
+  }
+
+  // Normalize file-uploader exceptions
+  if (err instanceof FileUploadException) {
+    // send 400 error in some cases
+    if (
+      [
+        ERROR_DETAILS.FILES_COUNT_LIMIT_ERROR.debug,
+        ERROR_DETAILS.FILE_SIZE_LIMIT_EXCEEDED_ERROR.debug,
+        ERROR_DETAILS.STREAM_READ_ERROR.debug,
+      ].includes(err.debug)
+    ) {
+      return new BadRequest({
+        message: err.message,
+        originalErrorDetails: err.details,
+      });
+    }
+
+    // send 415 error in the case of having UNSUPPORTED_MEDIA_TYPE_ERROR
+    if (err.debug === ERROR_DETAILS.UNSUPPORTED_MEDIA_TYPE_ERROR.debug) {
+      return new UnsupportedMediaType({
+        message: err.message,
+        originalErrorDetails: err.details,
+      });
+    }
+  }
+
+  return new InternalServerError('Server crashed internally for unkown reason');
+}
 
 export const errorHandler = async (
   err: Error,
@@ -7,17 +43,15 @@ export const errorHandler = async (
   res: express.Response,
   next,
 ) => {
-  await next();
+  next();
   console.error(`Error: ${err instanceof BaseError}`); // TODO add proper logging
-  /* TODO detect error types here and send corresponding errors
-   instead of only internal server error */
-  if (err instanceof BaseError) {
-    const error = err.getError();
-    return res.status(error.statusCode).json({
-      error,
-    });
-  }
-  return res.status(500).json({ message: 'Internal server error' });
+
+  // normalize errors, always it will be instanceof BaseError
+  const error = normalizeError(err).getError();
+
+  res.status(error.statusCode).json({
+    error,
+  });
 };
 
 export default errorHandler;
