@@ -38,6 +38,14 @@ export const serverConfig = {
 };
 
 /**
+ * AWS S3 credentials
+ */
+export const awsS3Config = {
+  accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
+};
+
+/**
  * CORS whitelist variables
  */
 export const whiteList = process.env.CORS_WHITE_LIST;
