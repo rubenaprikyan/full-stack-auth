@@ -6,17 +6,9 @@ type HandlerCallbackWithCtx<T, P> = (ctx: { req: T; res: P }, next?: NextFunctio
 type ExpressMiddleware<T, P> = (req: T, res: P, next?: NextFunction) => any;
 
 /**
- * Express Context without any change
- */
-export type Context = {
-  req: Request;
-  res: Response;
-};
-
-/**
  * Context with files
  */
-export type ContextWithFiles = {
+export type Context = {
   req: RequestWithFiles;
   res: Response;
 };

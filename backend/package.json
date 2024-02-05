@@ -19,6 +19,7 @@
     "express": "^4.18.2",
     "lodash": "^4.17.21",
     "pg": "^8.4.0",
+    "randomstring": "^1.3.0",
     "reflect-metadata": "^0.1.14",
     "typeorm": "^0.3.20",
     "uuid": "^9.0.1"
