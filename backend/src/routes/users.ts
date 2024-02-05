@@ -1,7 +1,7 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
 import CustomDataSource from '../database/data-source';
-import throwable from '../modules/exceptions/throwable';
+import throwable, { Context } from '../modules/exceptions/throwable';
 
 import { dbConfig } from '../config';
 
@@ -14,7 +14,13 @@ const router = express.Router();
 const AppDataSource = CustomDataSource.getInstance(dbConfig);
 const userController = new UserController(AppDataSource);
 
-router.post('/register', throwable(userController.register));
+router.post(
+  '/register',
+  throwable(async (ctx: Context) => {
+    const view = await userController.register(ctx.req.body);
+    ctx.res.status(201).json(view);
+  }),
+);
 
 export default {
   RESOURCE_NAME,

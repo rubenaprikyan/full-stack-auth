@@ -1,5 +1,5 @@
-import S3Service from '../services/S3Service';
 import { File } from '../modules/file-upload';
+import S3Service from '../services/S3Service';
 
 class FilesController {
   private storage: S3Service;

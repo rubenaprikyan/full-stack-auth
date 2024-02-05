@@ -8,7 +8,18 @@
     "outDir": "./dist",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": "src" /* Specify the base directory to resolve non-relative module names. */,
+    "paths": {
+      "config/*": ["config/*"],
+      "controllers/*": ["controllers/*"],
+      "database/*": ["database/*"],
+      "modules/*": ["modules/*"],
+      "types/*": ["types/*"],
+      "middlewares/*": ["middlewares/*"],
+      "routes": ["middlewares/*"],
+      "services": ["services/*"],
+    }
   },
   "ts-node": {
     "esm": true,

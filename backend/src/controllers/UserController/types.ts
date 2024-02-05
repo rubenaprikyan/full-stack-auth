@@ -1,5 +1,3 @@
-import { User } from '../../database/entities/User';
-
 export type UserCreationAttributes = {
   firstName: string;
   lastName: string;
@@ -10,9 +8,4 @@ export type UserCreationAttributes = {
 export type PhotoCreationAttributes = {
   key: string;
   name: string;
-};
-
-export type RegistrationResponseObject = {
-  user: User;
-  token: string;
 };

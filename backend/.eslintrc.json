@@ -40,16 +40,17 @@
     "import/no-extraneous-dependencies": "off",
     "no-empty-function": "off",
     "no-underscore-dangle": "off",
-    "no-explicit-any": "off",
     "function-paren-newline": "off",
     "comma-dangle": "off",
-    "consistent-return": "off"
+    "consistent-return": "off",
+    "no-unreachable": "off"
   },
   "settings": {
     "import/resolver": {
       "node": {
         "extensions": [".js", ".ts", ".node"]
-      }
+      },
+      "typescript": {}
     }
   }
 }

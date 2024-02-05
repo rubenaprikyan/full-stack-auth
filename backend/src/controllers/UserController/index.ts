@@ -8,7 +8,11 @@ import S3Service from '../../services/S3Service';
 import { Context } from '../../modules/exceptions/throwable';
 import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
-class UserController {
+import BaseController from '../BaseController';
+
+import { RegistrationViewModel } from './ViewModels';
+
+class UserController extends BaseController {
   private userRepository: Repository<User>;
 
   private clientRepository: Repository<Client>;
@@ -20,6 +24,7 @@ class UserController {
   private s3Service: S3Service = new S3Service();
 
   constructor(private dataSource: DataSource) {
+    super();
     this.userRepository = dataSource.getRepository(User);
     this.clientRepository = dataSource.getRepository(Client);
 
@@ -27,11 +32,14 @@ class UserController {
     this.photoRepository = dataSource.getRepository(Photo);
   }
 
-  public async register(ctx: Context) {
+  public async register(ctx: Context): Promise<RegistrationViewModel> {
     const user: UserCreationAttributes = ctx.req.body;
     const photos: PhotoCreationAttributes[] = ctx.req.body;
     const avatarKey: string | null = ctx.req.body;
 
+    /**
+     * Handling with database transaction
+     */
     const result = await this.dataSource.manager.transaction(async manager => {
       // create user
       const userEntity = this.userRepository.create({
@@ -63,9 +71,7 @@ class UserController {
       };
     });
 
-    ctx.res.status(201).json({
-      data: result,
-    });
+    return this.view(result);
   }
 
   private async createPhotos(photos: PhotoCreationAttributes[], clientEntity: Client) {
