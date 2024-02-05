@@ -2,7 +2,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { RequestWithFiles } from '../file-upload';
 
-type HandlerCallbackWithCtx<T, P> = (ctx: { req: T; res: P }, next?: NextFunction) => any;
+type HandlerCallbackWithCtx<T, P> = (
+  ctx: { req: T; res: P },
+  next?: NextFunction,
+) => Promise<{ statusCode: number; view: any }>;
 type ExpressMiddleware<T, P> = (req: T, res: P, next?: NextFunction) => any;
 
 /**
@@ -26,12 +29,15 @@ export type Context = {
 function throwable<TReq extends Request = Request, TRes extends Response = Response>(
   callback: HandlerCallbackWithCtx<TReq, TRes>,
 ): ExpressMiddleware<TReq, TRes> {
-  return async (req, res, next) => {
-    try {
-      return await callback({ req, res }, next);
-    } catch (exception) {
-      next(exception);
-    }
+  return (req, res, next) => {
+    callback({ req, res }, next)
+      .then(result => {
+        res.status(result.statusCode).json(result.view);
+      })
+      .catch(exception => {
+        console.error(exception);
+        next(exception);
+      });
   };
 }
 

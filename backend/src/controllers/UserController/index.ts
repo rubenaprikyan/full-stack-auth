@@ -17,9 +17,9 @@ class UserController extends BaseController {
   }
 
   public async register(ctx: Context): Promise<RegistrationViewModel> {
-    const user: UserCreationAttributes = ctx.req.body;
-    const photos: PhotoCreationAttributes[] = ctx.req.body;
-    const avatarKey: string | null = ctx.req.body;
+    const user: UserCreationAttributes = ctx.req.body.user;
+    const photos: PhotoCreationAttributes[] = ctx.req.body.photos;
+    const avatarKey: string | null = ctx.req.body.avatarKey;
 
     /**
      * Handling with database transaction

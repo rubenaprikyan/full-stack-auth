@@ -48,7 +48,6 @@ export class User extends BaseEntity {
   @Column({
     length: 32,
     nullable: false,
-    default: randomstring.generate(32),
   })
   accessTokenSalt: string;
 

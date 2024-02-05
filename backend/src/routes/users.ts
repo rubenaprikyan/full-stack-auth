@@ -17,8 +17,12 @@ const userController = new UserController(AppDataSource);
 router.post(
   '/register',
   throwable(async (ctx: Context) => {
-    const view = await userController.register(ctx.req.body);
-    ctx.res.status(201).json(view);
+    const view = await userController.register(ctx);
+
+    return {
+      view,
+      statusCode: 200,
+    };
   }),
 );
 

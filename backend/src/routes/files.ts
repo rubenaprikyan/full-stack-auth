@@ -3,6 +3,7 @@ import express from 'express';
 import FilesController from '../controllers/FilesController';
 import fileUpload from '../modules/file-upload';
 import throwable, { Context } from '../modules/exceptions/throwable';
+import { BadRequest } from '../modules/exceptions';
 
 const RESOURCE_NAME = '/files';
 const router = express.Router();
@@ -22,17 +23,26 @@ router.post(
   upload,
   throwable(async (ctx: Context) => {
     const result = await fileController.upload(ctx.req.files);
-    ctx.res.status(200).json({ data: result });
+    return {
+      statusCode: 200,
+      view: { data: result },
+    };
   }),
 );
 
-router.get('/upload-options', (req, res) => {
-  res.status(200).json({
-    data: {
-      options: uploadConfig,
-    },
-  });
-});
+router.get(
+  '/upload/configuration',
+  throwable(async () => {
+    return {
+      view: {
+        data: {
+          options: uploadConfig,
+        },
+      },
+      statusCode: 200,
+    };
+  }),
+);
 
 export default {
   RESOURCE_NAME,

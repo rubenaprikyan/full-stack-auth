@@ -1,8 +1,7 @@
+import randomstring from 'randomstring';
+
 import { DataSource, DeepPartial, Repository } from 'typeorm';
-import { User } from '../database/entities/User';
-import { UserAuthSession } from '../database/entities/UserAuthSession';
-import { Client } from '../database/entities/Client';
-import { Photo } from '../database/entities/Photo';
+import { User, UserAuthSession, Client, Photo } from '../database/entities';
 
 import S3Service from './S3Service';
 import { PhotoCreationAttributes } from '../controllers/UserController/types';
@@ -27,7 +26,10 @@ class UserService {
   }
 
   public createUser(user: DeepPartial<User>) {
-    return this.userRepository.create(user);
+    return this.userRepository.create({
+      ...user,
+      accessTokenSalt: randomstring.generate(32),
+    });
   }
 
   public async createProfilePhotos(

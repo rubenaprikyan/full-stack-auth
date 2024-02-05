@@ -27,7 +27,7 @@ export function createOptions(options: Options): Options {
  * @param {any[]} msg - message
  */
 export function invariant(...msg: unknown[]) {
-  if (isDevelopment) {
+  if (!isDevelopment) {
     console.log(...msg);
   }
 }
