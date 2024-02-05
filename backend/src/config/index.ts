@@ -38,6 +38,14 @@ export const serverConfig = {
 };
 
 /**
+ * AUTH config variables
+ */
+export const authConfig = {
+  accessTokenSecret: process.env.AUTH_TOKEN_SECRET || '',
+  accessTokenLifetime: intConf(process.env.AUTH_TOKEN_LIFETIME || 300),
+};
+
+/**
  * AWS S3 credentials
  */
 export const awsS3Config = {

@@ -82,7 +82,6 @@ class S3Service {
    * @param key
    */
   public getObjectUrl(key): string {
-    'uploader-experimental.s3.eu-west-2';
     return `https://${this.bucket}.s3.${Region}.amazonaws.com/${key}`;
   }
 }
