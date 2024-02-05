@@ -29,7 +29,7 @@ Includes the backend [project](./backend/README.md).
 - [x] Create initial Database models _[PR #5](https://github.com/rubenaprikyan/auth-task/pull/5)_
 - [x] Create `/api/users/register` API and registration logic _[PR #6](https://github.com/rubenaprikyan/auth-task/pull/6)_
 - [x] Create authentication middleware and AuthService _[PR #7](https://github.com/rubenaprikyan/auth-task/pull/7)_
-- [ ] Create `/api/users/login` API and login logic
+- [x] Create `/api/users/login` APIs and login logic _[PR #8](https://github.com/rubenaprikyan/auth-task/pull/8)_
 - [ ] Create `/api/users/me` API
 - [ ] Cleanup project and documentation
 
