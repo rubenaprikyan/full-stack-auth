@@ -26,6 +26,12 @@ class UserService {
     this.photoRepository = dataSource.getRepository(Photo);
   }
 
+  /**
+   * Creates user width provided parameters
+   * Creates password hash
+   * Creates accessTokenSalt
+   * @param user
+   */
   public createUser(user: DeepPartial<User>) {
     return this.userRepository.create({
       ...user,
@@ -34,6 +40,12 @@ class UserService {
     });
   }
 
+  /**
+   * Creates photos entities
+   * Copies objects from photo key to profile-pictures folder on s3
+   * @param {Photo[]} photos
+   * @param {Client} clientEntity
+   */
   public async createProfilePhotos(
     photos: PhotoCreationAttributes[],
     clientEntity: Client,
@@ -57,8 +69,14 @@ class UserService {
     });
   }
 
+  /**
+   * Creates client entity and set avatar to default or provided
+   * If avatar key is provided it copies object to s3 avatars folder
+   * @param {User} userEntity
+   * @param {String} avatarKey
+   */
   public async createClient(userEntity: User, avatarKey?: string) {
-    let avatar = '/avatars/default.png';
+    let avatar = '/avatars/default.jpeg';
 
     /**
      * if there is avatar uploaded with profile copy object to s3 avatars folder
@@ -82,7 +100,7 @@ class UserService {
     });
   }
 
-  public createAuthToken(userEntity: User) {
+  public createAuthSession(userEntity: User) {
     const payload = {
       salt: userEntity.accessTokenSalt,
       email: userEntity.email,
@@ -104,6 +122,14 @@ class UserService {
         user: {
           email,
         },
+      },
+    });
+  }
+
+  public findByEmail(email: string) {
+    return this.userRepository.findOne({
+      where: {
+        email,
       },
     });
   }

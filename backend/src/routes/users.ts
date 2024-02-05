@@ -23,19 +23,17 @@ router.post(
 
     return {
       view,
-      statusCode: 200,
+      statusCode: 201,
     };
   }),
 );
 
-router.get(
-  '/protected',
-  auth,
+router.post(
+  '/login',
   throwable(async (ctx: Context) => {
+    const view = await userController.login(ctx);
     return {
-      view: {
-        data: ctx.req.user,
-      },
+      view,
       statusCode: 200,
     };
   }),
