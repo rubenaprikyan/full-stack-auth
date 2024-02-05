@@ -19,7 +19,7 @@ export class Photo extends BaseEntity {
   /**
    * Associations
    */
-  @ManyToOne(() => Client, client => client.photos)
+  @ManyToOne(() => Client)
   @JoinColumn()
   client: Client;
 }

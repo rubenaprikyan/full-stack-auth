@@ -1,5 +1,3 @@
-import randomstring from 'randomstring';
-
 import { Entity, Column, OneToOne, JoinColumn, OneToMany, BeforeInsert } from 'typeorm';
 import { UserAuthSession } from './UserAuthSession';
 import { Client } from './Client';
@@ -54,7 +52,7 @@ export class User extends BaseEntity {
   /**
    * Associations
    */
-  @OneToOne(() => Client)
+  @OneToOne(() => Client, (client: Client) => client.user)
   @JoinColumn()
   client: Client;
 

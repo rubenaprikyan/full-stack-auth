@@ -14,7 +14,7 @@ export class Client extends BaseEntity {
   /**
    * Associations
    */
-  @OneToOne(() => User, (user: User) => user.client, {
+  @OneToOne(() => User, {
     cascade: true,
     onDelete: 'CASCADE',
   })

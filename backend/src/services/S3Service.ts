@@ -62,7 +62,6 @@ class S3Service {
    * @param {CopyObject[]} objects - objects to copy
    */
   public copyObjects(objects: CopyObject[]) {
-    console.log(objects);
     const copyPromises = objects.map(object => {
       const requestParams: AWS.S3.CopyObjectRequest = {
         Bucket: this.bucket,
@@ -82,7 +81,6 @@ class S3Service {
    * @param key
    */
   public getObjectUrl(key): string {
-    'uploader-experimental.s3.eu-west-2';
     return `https://${this.bucket}.s3.${Region}.amazonaws.com/${key}`;
   }
 }

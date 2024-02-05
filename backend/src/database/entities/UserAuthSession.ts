@@ -11,7 +11,7 @@ export class UserAuthSession extends BaseEntity {
   /**
    * Associations
    */
-  @ManyToOne(() => User, user => user.authSessions)
+  @ManyToOne(() => User)
   @JoinColumn()
   user: User;
 }

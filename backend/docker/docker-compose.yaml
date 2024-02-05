@@ -9,7 +9,7 @@ services:
       - '5432:5432'
     environment:
       POSTGRES_USER: root
-      POSTGRES_DB: auth
+      POSTGRES_DB: auth.ts
       POSTGRES_PASSWORD: test # TODO make secure password
     volumes:
       - pg_data:/var/lib/postgresql/data
