@@ -1,7 +1,7 @@
 {
   "exec": "npx ts-node --esm src/index.ts",
   "env": {
-    "NODE_OPTIONS": "--trace-warnings --unhandled-rejections=strict",
+    "NODE_OPTIONS": "--trace-warnings --unhandled-rejections=strict --loader=./loader.mjs",
     "NODE_ENV": "development"
   },
   "watch": ["src"],
