@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 import _omit from 'lodash/omit';
 
-import { File } from 'modules/file-upload';
+import { File } from '../modules/file-upload';
 
 AWS.config.update({
   region: 'eu-west-2',

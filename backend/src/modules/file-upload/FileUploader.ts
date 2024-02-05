@@ -43,7 +43,7 @@ class FileUploader {
 
   public addPart(part: Part) {
     // Check if mimeType is allowed and raise an error if not
-    if (!this.options.allowedMediaTypes.includes(part.info.mimeTpe)) {
+    if (!this.options.allowedMediaTypes.includes(part.info.mimeType)) {
       return this.abortRequestWithError(
         ERROR_DETAILS.UNSUPPORTED_MEDIA_TYPE_ERROR.debug,
         {

@@ -5,6 +5,7 @@ import errorHandler from './middlewares/errorHandler';
 
 import { dbConfig, serverConfig } from './config';
 import fileUpload, { RequestWithFiles } from './modules/file-upload';
+import registerRoutes from './routes';
 
 const app = express();
 const AppDataSource = CustomDataSource.getInstance(dbConfig);
@@ -14,6 +15,11 @@ const AppDataSource = CustomDataSource.getInstance(dbConfig);
  */
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+/**
+ * Routes
+ */
+registerRoutes(app);
 
 app.get('/ping', (req, res) => {
   res.status(200).json({ data: 'pong' });

@@ -9,11 +9,13 @@ const router = express.Router();
 
 const fileController = new FilesController();
 
-const upload = fileUpload({
+const uploadConfig = {
   maxFilesCount: 25,
   maxFileSize: 1024 * 1024, // 1mb
   allowedMediaTypes: ['image/jpeg'],
-});
+};
+
+const upload = fileUpload(uploadConfig);
 
 router.post(
   '/upload',
@@ -27,7 +29,7 @@ router.post(
 router.get('/upload-options', (req, res) => {
   res.status(200).json({
     data: {
-      options: upload,
+      options: uploadConfig,
     },
   });
 });
