@@ -59,7 +59,7 @@ async function auth(req: Request, res: Response, next: NextFunction) {
     // currently it's impossible to solve this error without extra efforts
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
-    req.user = session.user;
+    req.session = session;
     req.headers.token = token;
 
     next();

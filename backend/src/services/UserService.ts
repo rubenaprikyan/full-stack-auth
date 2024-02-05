@@ -133,6 +133,15 @@ class UserService {
       },
     });
   }
+
+  public removeAuthSession(token: string) {
+    this.userAuthSessionRepository
+      .createQueryBuilder()
+      .delete()
+      .from(UserAuthSession)
+      .where('token = :token', { token })
+      .execute();
+  }
 }
 
 export default UserService;

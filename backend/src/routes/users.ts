@@ -39,6 +39,18 @@ router.post(
   }),
 );
 
+router.delete(
+  '/logout',
+  auth,
+  throwable(async (ctx: Context) => {
+    const view = await userController.logout(ctx);
+    return {
+      view,
+      statusCode: 204,
+    };
+  }),
+);
+
 export default {
   RESOURCE_NAME,
   router,

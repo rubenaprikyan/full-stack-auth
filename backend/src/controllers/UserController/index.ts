@@ -9,6 +9,7 @@ import { RegistrationViewModel } from './ViewModels';
 import UserService from '../../services/UserService';
 import { BadRequest } from '../../modules/exceptions';
 import AuthService from '../../services/AuthService';
+import userService from '../../services/UserService';
 
 class UserController extends BaseController {
   private userService: UserService;
@@ -89,6 +90,11 @@ class UserController extends BaseController {
     });
 
     return this.view(result);
+  }
+
+  public async logout(ctx: Context) {
+    await this.userService.removeAuthSession(ctx.req.session.token);
+    return this.view(null);
   }
 }
 
