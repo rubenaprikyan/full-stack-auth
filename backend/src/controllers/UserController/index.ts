@@ -53,7 +53,7 @@ class UserController extends BaseController {
       userEntity.client = clientEntity;
 
       // create auth token
-      const authTokenEntity = this.createAuthToken(userEntity);
+      const authSessionEntity = this.createAuthToken(userEntity);
 
       // create photos
       const photoEntities = await this.createPhotos(photos, clientEntity);
@@ -62,7 +62,7 @@ class UserController extends BaseController {
       // save to database
       await manager.save(photoEntities);
       await manager.save(clientEntity);
-      const authToken = await manager.save(authTokenEntity);
+      const authToken = await manager.save(authSessionEntity);
       const createdUser = await manager.save(userEntity);
 
       return {
