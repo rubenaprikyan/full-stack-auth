@@ -18,16 +18,16 @@ Includes the backend [project](./backend/README.md).
 
 ## Roadmap
 
-- [x] Design the system [PR #1](https://github.com/rubenaprikyan/auth-task/pull/1)
-- [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md). [Commit](https://github.com/rubenaprikyan/auth-task/commit/64014de75f23765052037df486e7c734dd73afda)
+- [x] Design the system _[PR #1](https://github.com/rubenaprikyan/auth-task/pull/1)_
+- [x] Broke the project into smaller tasks based on [design](./docs/DEISGN.md). _[Commit](https://github.com/rubenaprikyan/auth-task/commit/64014de75f23765052037df486e7c734dd73afda)_
 
 **Backend Tasks**
 
-- [x] Setup Backend project [PR #2](https://github.com/rubenaprikyan/auth-task/pull/2)
-- [x] Create `file-upload` custom module ([documentation](./backend/src/modules/file-upload/README.md)) [PR #3](https://github.com/rubenaprikyan/auth-task/pull/3)
-- [x] Create `/api/files/upload` API and S3 files management [PR #4](https://github.com/rubenaprikyan/auth-task/pull/4)
-- [x] Create initial Database models [PR #5](https://github.com/rubenaprikyan/auth-task/pull/5)
-- [ ] Create `/api/users/register` API and registration logic
+- [x] Setup Backend project _[PR #2](https://github.com/rubenaprikyan/auth-task/pull/2)_
+- [x] Create `file-upload` custom module ([documentation](./backend/src/modules/file-upload/README.md)) _[PR #3](https://github.com/rubenaprikyan/auth-task/pull/3)_
+- [x] Create `/api/files/upload` API and S3 files management _[PR #4](https://github.com/rubenaprikyan/auth-task/pull/4)_
+- [x] Create initial Database models _[PR #5](https://github.com/rubenaprikyan/auth-task/pull/5)_
+- [ ] Create `/api/users/register` API and registration logic _[PR #6](https://github.com/rubenaprikyan/auth-task/pull/6)_
 - [ ] Create authentication middleware and AuthService
 - [ ] Create `/api/users/login` API and login logic
 - [ ] Create `/api/users/me` API

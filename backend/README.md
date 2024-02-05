@@ -50,7 +50,6 @@ That will work with `PutObjectACL`, `ListObjectACL`, `MoveObject`, `PutObject` a
 - [configure aws cli](https://docs.aws.amazon.com/cli/latest/reference/configure/) with your `aws_access_key_id` and `aws_secret_access_key`.
 
 
-
 ### Run the backend api
 
 ```bash
@@ -74,6 +73,5 @@ npm run api-dev
 `/controllers` - includes controllers, to handle routes and business logic
 
 `/services` - includes services, related to business logic
-
 
 `index.ts` - the entry point, creates server, database connection, injects app level middlewares, routes
