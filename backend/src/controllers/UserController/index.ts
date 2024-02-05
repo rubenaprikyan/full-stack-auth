@@ -1,6 +1,6 @@
 import { DataSource } from 'typeorm';
 
-import { Context } from '../../modules/exceptions/throwable';
+import { Context } from '../../types';
 import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
 import BaseController from '../BaseController';
@@ -30,30 +30,27 @@ class UserController extends BaseController {
         ...user,
         password: 'hash',
       });
+      const newUser = await manager.save(userEntity);
 
       // create client
-      const clientEntity = await this.userService.createClient(avatarKey);
-      userEntity.client = clientEntity;
+      const clientEntity = await this.userService.createClient(newUser, avatarKey);
+      const newClient = await manager.save(clientEntity);
 
-      // create auth token
-      const authSessionEntity = this.userService.createAuthToken(userEntity);
+      // create auth.ts token
+      const authSessionEntity = this.userService.createAuthToken(newUser);
+      const newSession = await manager.save(authSessionEntity);
 
       // create photos
-      const photoEntities = await this.userService.createProfilePhotos(
-        photos,
-        clientEntity,
-      );
-      clientEntity.photos = photoEntities;
-
-      // save to database
+      const photoEntities = await this.userService.createProfilePhotos(photos, newClient);
       await manager.save(photoEntities);
-      await manager.save(clientEntity);
-      const authToken = await manager.save(authSessionEntity);
-      const createdUser = await manager.save(userEntity);
+
+      newUser.client = newClient;
+      // save to database
+      const createdUser = await manager.save(newUser);
 
       return {
         user: createdUser,
-        token: authToken.token,
+        auth_token: newSession.token,
       };
     });
 

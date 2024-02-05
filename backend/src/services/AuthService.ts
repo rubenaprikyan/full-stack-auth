@@ -10,7 +10,7 @@ export type Payload = {
   /**
    * user email
    */
-  userEmail: string;
+  email: string;
   /**
    * users accessTokenSalt
    */
@@ -23,7 +23,7 @@ class AuthService {
    * @param {String} password
    * @param {Number} salt
    */
-  public static generatePasswordHash(password = '', salt = 8) {
+  public static generatePasswordHash(password = '', salt = 10) {
     return bcrypt.hashSync(password.trim(), salt);
   }
 

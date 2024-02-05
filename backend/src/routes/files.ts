@@ -2,8 +2,8 @@ import express from 'express';
 
 import FilesController from '../controllers/FilesController';
 import fileUpload from '../modules/file-upload';
-import throwable, { Context } from '../modules/exceptions/throwable';
-import { BadRequest } from '../modules/exceptions';
+import throwable from '../modules/exceptions/throwable';
+import { Context } from '../types';
 
 const RESOURCE_NAME = '/files';
 const router = express.Router();

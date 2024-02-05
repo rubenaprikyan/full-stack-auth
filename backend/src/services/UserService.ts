@@ -5,6 +5,7 @@ import { User, UserAuthSession, Client, Photo } from '../database/entities';
 
 import S3Service from './S3Service';
 import { PhotoCreationAttributes } from '../controllers/UserController/types';
+import AuthService from './AuthService';
 
 class UserService {
   private userRepository: Repository<User>;
@@ -29,6 +30,7 @@ class UserService {
     return this.userRepository.create({
       ...user,
       accessTokenSalt: randomstring.generate(32),
+      password: AuthService.generatePasswordHash(user.password),
     });
   }
 
@@ -44,16 +46,18 @@ class UserService {
     // copy objects to s3 profile-pictures folder
     await this.s3Service.copyObjects(objects);
 
-    return photos.map(photo =>
-      this.photoRepository.create({
+    return photos.map(photo => {
+      const entity = this.photoRepository.create({
         name: photo.name,
         url: this.s3Service.getObjectUrl(photo.key),
-        client: clientEntity,
-      }),
-    );
+      });
+      entity.client = clientEntity;
+
+      return entity;
+    });
   }
 
-  public async createClient(avatarKey?: string) {
+  public async createClient(userEntity: User, avatarKey?: string) {
     let avatar = '/avatars/default.png';
 
     /**
@@ -74,18 +78,33 @@ class UserService {
 
     return this.clientRepository.create({
       avatar,
+      user: userEntity,
     });
   }
 
   public createAuthToken(userEntity: User) {
-    // const payload = {
-    //   salt: userEntity.accessTokenSalt,
-    //   userEmail: userEntity.email,
-    // };
+    const payload = {
+      salt: userEntity.accessTokenSalt,
+      email: userEntity.email,
+    };
 
     return this.userAuthSessionRepository.create({
-      token: 'token',
+      token: AuthService.generateAuthToken(payload),
       user: userEntity,
+    });
+  }
+
+  public getSessionByToken(token: string, email: string) {
+    return this.userAuthSessionRepository.findOne({
+      relations: {
+        user: true,
+      },
+      where: {
+        token,
+        user: {
+          email,
+        },
+      },
     });
   }
 }

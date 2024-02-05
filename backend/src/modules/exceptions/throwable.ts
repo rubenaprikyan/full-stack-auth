@@ -1,20 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express';
-import { RequestWithFiles } from '../file-upload';
 
 type HandlerCallbackWithCtx<T, P> = (
   ctx: { req: T; res: P },
   next?: NextFunction,
 ) => Promise<{ statusCode: number; view: any }>;
 type ExpressMiddleware<T, P> = (req: T, res: P, next?: NextFunction) => any;
-
-/**
- * Context with files
- */
-export type Context = {
-  req: RequestWithFiles;
-  res: Response;
-};
 
 /**
  * throwable

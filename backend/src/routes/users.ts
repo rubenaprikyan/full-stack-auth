@@ -1,9 +1,11 @@
 import express from 'express';
 import UserController from '../controllers/UserController';
 import CustomDataSource from '../database/data-source';
-import throwable, { Context } from '../modules/exceptions/throwable';
+import throwable from '../modules/exceptions/throwable';
 
 import { dbConfig } from '../config';
+import auth from '../middlewares/auth';
+import { Context } from '../types';
 
 /**
  * RESOURCE_NAME used as the rest api principle
@@ -21,6 +23,19 @@ router.post(
 
     return {
       view,
+      statusCode: 200,
+    };
+  }),
+);
+
+router.get(
+  '/protected',
+  auth,
+  throwable(async (ctx: Context) => {
+    return {
+      view: {
+        data: ctx.req.user,
+      },
       statusCode: 200,
     };
   }),

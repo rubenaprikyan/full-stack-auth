@@ -62,7 +62,6 @@ class S3Service {
    * @param {CopyObject[]} objects - objects to copy
    */
   public copyObjects(objects: CopyObject[]) {
-    console.log(objects);
     const copyPromises = objects.map(object => {
       const requestParams: AWS.S3.CopyObjectRequest = {
         Bucket: this.bucket,
