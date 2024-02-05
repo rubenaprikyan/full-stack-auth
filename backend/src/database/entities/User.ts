@@ -1,3 +1,5 @@
+import randomstring from 'randomstring';
+
 import { Entity, Column, OneToOne, JoinColumn, OneToMany, BeforeInsert } from 'typeorm';
 import { UserAuthSession } from './UserAuthSession';
 import { Client } from './Client';
@@ -42,6 +44,12 @@ export class User extends BaseEntity {
     default: 'user',
   }) // Default role is 'user'
   role: string;
+
+  @Column({
+    length: 32,
+    nullable: false,
+  })
+  accessTokenSalt: string;
 
   /**
    * Associations

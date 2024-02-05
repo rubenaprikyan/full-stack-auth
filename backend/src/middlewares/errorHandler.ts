@@ -34,7 +34,7 @@ function normalizeError(err): BaseError {
     }
   }
 
-  return new InternalServerError('Server crashed internally for unkown reason');
+  return new InternalServerError('Server crashed internally for unknown reason');
 }
 
 export const errorHandler = async (
@@ -43,9 +43,8 @@ export const errorHandler = async (
   res: express.Response,
   next,
 ) => {
-  next();
   console.error(`Error: ${err instanceof BaseError}`); // TODO add proper logging
-
+  next();
   // normalize errors, always it will be instanceof BaseError
   const error = normalizeError(err).getError();
 

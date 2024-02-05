@@ -2,9 +2,10 @@ import AWS from 'aws-sdk';
 import _omit from 'lodash/omit';
 
 import { File } from '../modules/file-upload';
+const Region = 'eu-west-2';
 
 AWS.config.update({
-  region: 'eu-west-2',
+  region: Region,
 });
 
 const Bucket = 'uploader-experimental';
@@ -61,6 +62,7 @@ class S3Service {
    * @param {CopyObject[]} objects - objects to copy
    */
   public copyObjects(objects: CopyObject[]) {
+    console.log(objects);
     const copyPromises = objects.map(object => {
       const requestParams: AWS.S3.CopyObjectRequest = {
         Bucket: this.bucket,
@@ -80,7 +82,8 @@ class S3Service {
    * @param key
    */
   public getObjectUrl(key): string {
-    return `https://s3.amazonaws.com/${this.bucket}/${key}`;
+    'uploader-experimental.s3.eu-west-2';
+    return `https://${this.bucket}.s3.${Region}.amazonaws.com/${key}`;
   }
 }
 

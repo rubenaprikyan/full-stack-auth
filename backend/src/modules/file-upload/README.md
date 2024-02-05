@@ -18,7 +18,39 @@ app.post('/upload', fileUploadMiddleware(), (req, res) => {
 });
 
 ```
-
+The `req.files` is the array of files which includes the following properties.
+```ts
+{
+  /**
+   * File extension
+   */
+  ext: string;
+  /**
+   * file mime type
+   */
+  mime: string;
+  /**
+   * Field name
+   */
+  name: string;
+  /**
+   * file data
+   */
+  binary: Buffer;
+  /**
+   * file name
+   */
+  filename: string;
+  /**
+   * file size in bytes
+   */
+  size: number;
+  /**
+   * unique identifier - typically it will be UUID
+   */
+  id: string;
+}
+```
 ## Options
 
 You can customize the behavior of the middleware by passing options when initializing it. The available options are:
