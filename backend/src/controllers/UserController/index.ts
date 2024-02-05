@@ -1,5 +1,5 @@
 import { DataSource } from 'typeorm';
-
+import bcrypt from 'bcrypt';
 import { Context } from '../../types';
 import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
@@ -7,6 +7,9 @@ import BaseController from '../BaseController';
 
 import { RegistrationViewModel } from './ViewModels';
 import UserService from '../../services/UserService';
+import { BadRequest } from '../../modules/exceptions';
+import AuthService from '../../services/AuthService';
+import userService from '../../services/UserService';
 
 class UserController extends BaseController {
   private userService: UserService;
@@ -16,6 +19,41 @@ class UserController extends BaseController {
     this.userService = new UserService(dataSource);
   }
 
+  /**
+   * handles user login endpoint
+   * @param ctx
+   */
+  public async login(ctx: Context) {
+    const user = await this.userService.findByEmail(ctx.req.body.email);
+
+    if (!user) {
+      throw new BadRequest('Invalid Email or Password');
+    }
+
+    const isPasswordMatch = AuthService.comparePasswordHashes(
+      ctx.req.body.password,
+      user.password,
+    );
+
+    if (!isPasswordMatch) {
+      throw new BadRequest('Invalid Email or Password');
+    }
+
+    const authSession = this.userService.createAuthSession(user);
+    await this.dataSource.manager.save(authSession);
+
+    const result = {
+      user,
+      auth_token: authSession.token,
+    };
+
+    return this.view(result);
+  }
+
+  /**
+   * handles user registration endpoint
+   * @param ctx
+   */
   public async register(ctx: Context): Promise<RegistrationViewModel> {
     const user: UserCreationAttributes = ctx.req.body.user;
     const photos: PhotoCreationAttributes[] = ctx.req.body.photos;
@@ -26,10 +64,7 @@ class UserController extends BaseController {
      */
     const result = await this.dataSource.manager.transaction(async manager => {
       // create user
-      const userEntity = this.userService.createUser({
-        ...user,
-        password: 'hash',
-      });
+      const userEntity = this.userService.createUser(user);
       const newUser = await manager.save(userEntity);
 
       // create client
@@ -37,7 +72,7 @@ class UserController extends BaseController {
       const newClient = await manager.save(clientEntity);
 
       // create auth.ts token
-      const authSessionEntity = this.userService.createAuthToken(newUser);
+      const authSessionEntity = this.userService.createAuthSession(newUser);
       const newSession = await manager.save(authSessionEntity);
 
       // create photos
@@ -55,6 +90,11 @@ class UserController extends BaseController {
     });
 
     return this.view(result);
+  }
+
+  public async logout(ctx: Context) {
+    await this.userService.removeAuthSession(ctx.req.session.token);
+    return this.view(null);
   }
 }
 

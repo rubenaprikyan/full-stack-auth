@@ -23,20 +23,30 @@ router.post(
 
     return {
       view,
+      statusCode: 201,
+    };
+  }),
+);
+
+router.post(
+  '/login',
+  throwable(async (ctx: Context) => {
+    const view = await userController.login(ctx);
+    return {
+      view,
       statusCode: 200,
     };
   }),
 );
 
-router.get(
-  '/protected',
+router.delete(
+  '/logout',
   auth,
   throwable(async (ctx: Context) => {
+    const view = await userController.logout(ctx);
     return {
-      view: {
-        data: ctx.req.user,
-      },
-      statusCode: 200,
+      view,
+      statusCode: 204,
     };
   }),
 );

@@ -23,7 +23,7 @@ class AuthService {
    * @param {String} password
    * @param {Number} salt
    */
-  public static generatePasswordHash(password = '', salt = 10) {
+  public static generatePasswordHash(password = '', salt = 8) {
     return bcrypt.hashSync(password.trim(), salt);
   }
 
@@ -32,7 +32,7 @@ class AuthService {
    * @param {String} password
    * @param {String} candidate
    */
-  public static comparePasswordHashes(password, candidate): boolean {
+  public static comparePasswordHashes(candidate: string, password: string): boolean {
     return bcrypt.compareSync(candidate, password);
   }
 
