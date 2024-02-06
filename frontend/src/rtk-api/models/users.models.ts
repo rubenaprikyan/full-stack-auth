@@ -49,6 +49,22 @@ export interface RegistrationResponseData {
 export type RegistrationViewModel = ViewModel<RegistrationResponseData>;
 
 /**
+ * ================ Login Mutation ==============
+ */
+
+export interface LoginQueryBody {
+  email: string;
+  password: string;
+}
+
+export interface LoginResponseData {
+  auth_token: string;
+  user: UserProfile;
+}
+
+export type LoginViewModel = ViewModel<LoginResponseData>;
+
+/**
  * ================ Get Me request ==============
  */
 export type UserProfileQueryParams = void;

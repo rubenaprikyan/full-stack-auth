@@ -7,6 +7,8 @@ import {
   UserProfileViewModel,
   CheckEmailViewModel,
   CheckEmailRequestBody,
+  LoginViewModel,
+  LoginQueryBody,
 } from '../models/users.models';
 
 const usersApi = api.enhanceEndpoints({}).injectEndpoints({
@@ -36,6 +38,19 @@ const usersApi = api.enhanceEndpoints({}).injectEndpoints({
     }),
 
     /**
+     * Registration endpoint handler
+     */
+    login: build.mutation<LoginViewModel, LoginQueryBody>({
+      query: (body) => ({
+        url: '/users/login',
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (data: RegistrationViewModel) => {
+        return data;
+      },
+    }),
+    /**
      * check-email-existence endpoint handler
      */
     checkEmailExistence: build.mutation<
@@ -56,6 +71,7 @@ const usersApi = api.enhanceEndpoints({}).injectEndpoints({
 
 export const {
   endpoints: { getMe },
+  useLoginMutation,
   useRegisterMutation,
   useCheckEmailExistenceMutation,
   useGetMeQuery,
