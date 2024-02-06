@@ -5,11 +5,10 @@ import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
 import BaseController from '../BaseController';
 
-import { RegistrationViewModel } from './ViewModels';
+import { LoginViewModel, RegistrationViewModel } from './ViewModels';
 import UserService from '../../services/UserService';
 import { BadRequest } from '../../modules/exceptions';
 import AuthService from '../../services/AuthService';
-import userService from '../../services/UserService';
 
 class UserController extends BaseController {
   private userService: UserService;
@@ -20,10 +19,19 @@ class UserController extends BaseController {
   }
 
   /**
+   * handles getMe endpoint
+   * @param ctx
+   */
+  public async getMe(ctx: Context) {
+    const user = await this.userService.getUserProfileById(ctx.req.session.user.id);
+
+    return this.view(user);
+  }
+  /**
    * handles user login endpoint
    * @param ctx
    */
-  public async login(ctx: Context) {
+  public async login(ctx: Context): Promise<LoginViewModel> {
     const user = await this.userService.findByEmail(ctx.req.body.email);
 
     if (!user) {
@@ -43,7 +51,7 @@ class UserController extends BaseController {
     await this.dataSource.manager.save(authSession);
 
     const result = {
-      user,
+      user: await this.userService.getUserProfileById(user.id),
       auth_token: authSession.token,
     };
 
@@ -62,36 +70,49 @@ class UserController extends BaseController {
     /**
      * Handling with database transaction
      */
-    const result = await this.dataSource.manager.transaction(async manager => {
-      // create user
-      const userEntity = this.userService.createUser(user);
-      const newUser = await manager.save(userEntity);
+    const { auth_token, userId } = await this.dataSource.manager.transaction(
+      async manager => {
+        // create user
+        const userEntity = this.userService.createUser(user);
+        const newUser = await manager.save(userEntity);
 
-      // create client
-      const clientEntity = await this.userService.createClient(newUser, avatarKey);
-      const newClient = await manager.save(clientEntity);
+        // create client
+        const clientEntity = await this.userService.createClient(newUser, avatarKey);
+        const newClient = await manager.save(clientEntity);
 
-      // create auth.ts token
-      const authSessionEntity = this.userService.createAuthSession(newUser);
-      const newSession = await manager.save(authSessionEntity);
+        // create auth.ts token
+        const authSessionEntity = this.userService.createAuthSession(newUser);
+        const newSession = await manager.save(authSessionEntity);
 
-      // create photos
-      const photoEntities = await this.userService.createProfilePhotos(photos, newClient);
-      await manager.save(photoEntities);
+        // create photos
+        const photoEntities = await this.userService.createProfilePhotos(
+          photos,
+          newClient,
+        );
+        await manager.save(photoEntities);
 
-      newUser.client = newClient;
-      // save to database
-      const createdUser = await manager.save(newUser);
+        newUser.client = newClient;
+        // save to database
+        await manager.save(newUser);
 
-      return {
-        user: createdUser,
-        auth_token: newSession.token,
-      };
+        return {
+          userId: newUser.id,
+          auth_token: newSession.token,
+        };
+      },
+    );
+
+    return this.view({
+      // TODO change to runtime filtering without database query
+      user: await this.userService.getUserProfileById(userId),
+      auth_token,
     });
-
-    return this.view(result);
   }
 
+  /**
+   * handles logout endpoint
+   * @param ctx
+   */
   public async logout(ctx: Context) {
     await this.userService.removeAuthSession(ctx.req.session.token);
     return this.view(null);

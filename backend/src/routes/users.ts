@@ -16,6 +16,18 @@ const router = express.Router();
 const AppDataSource = CustomDataSource.getInstance(dbConfig);
 const userController = new UserController(AppDataSource);
 
+router.get(
+  '/me',
+  auth,
+  throwable(async (ctx: Context) => {
+    const view = await userController.getMe(ctx);
+    return {
+      view,
+      statusCode: 200,
+    };
+  }),
+);
+
 router.post(
   '/register',
   throwable(async (ctx: Context) => {

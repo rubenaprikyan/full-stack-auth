@@ -1,7 +1,27 @@
 import { BaseViewModel } from '../../types';
-import { User } from '../../database/entities/User';
+import { Photo } from '../../database/entities';
 
-export type RegistrationViewModel = BaseViewModel<{
-  user: User;
+export type LoginViewModel = BaseViewModel<{
+  user: UserWithClientAndPhotos;
   auth_token: string;
 }>;
+
+export type RegistrationViewModel = BaseViewModel<{
+  user: UserWithClientAndPhotos;
+  auth_token: string;
+}>;
+
+export interface UserWithClientAndPhotos {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  createdAt: Date;
+  updatedAt: Date;
+  client: {
+    avatar: string;
+    photos: Photo[];
+  };
+}
+
+export type UserProfileViewModel = BaseViewModel<UserWithClientAndPhotos>;
