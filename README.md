@@ -37,7 +37,7 @@ Includes the backend [project](./backend/README.md).
 
 - [x] Setup Frontend project _[PR #10](https://github.com/rubenaprikyan/auth-task/pull/10)_
 - [x] Setup component library and general styles _[PR #11](https://github.com/rubenaprikyan/auth-task/pull/11)_
-- [ ] Create Form related components UI
+- [x] Create Form related components UI _[PR #12](https://github.com/rubenaprikyan/auth-task/pull/12)_
 - [ ] Create Registration form page and logic
 - [ ] Create Login form page and logic
 - [ ] Create Profile page
