@@ -45,7 +45,11 @@ Last step,
 }
 ```
 
-That will work with `PutObjectACL`, `ListObjectACL`, `MoveObject`, `PutObject` access points as well if you dont want to give full access.
+That will work with
+`GetObject`
+`GetObjectAcl`
+`PutObject`
+`PutObjectAcl` access points as well if you dont want to give full access.
 
 - [configure aws cli](https://docs.aws.amazon.com/cli/latest/reference/configure/) with your `aws_access_key_id` and `aws_secret_access_key`.
 

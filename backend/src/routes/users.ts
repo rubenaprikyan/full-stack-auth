@@ -63,6 +63,17 @@ router.delete(
   }),
 );
 
+router.post(
+  '/check-email-existence',
+  throwable(async (ctx: Context) => {
+    const view = await userController.checkEmailExistence(ctx);
+    return {
+      view,
+      statusCode: 200,
+    };
+  }),
+);
+
 export default {
   RESOURCE_NAME,
   router,

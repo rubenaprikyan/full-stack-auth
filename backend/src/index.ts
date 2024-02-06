@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 
 import CustomDataSource from './database/data-source';
 import errorHandler from './middlewares/errorHandler';
@@ -12,6 +13,11 @@ const AppDataSource = CustomDataSource.getInstance(dbConfig);
 /**
  * Middlewares
  */
+app.use(
+  cors({
+    origin: '*',
+  }),
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

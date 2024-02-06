@@ -1,5 +1,4 @@
 import { DataSource } from 'typeorm';
-import bcrypt from 'bcrypt';
 import { Context } from '../../types';
 import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
@@ -66,7 +65,6 @@ class UserController extends BaseController {
     const user: UserCreationAttributes = ctx.req.body.user;
     const photos: PhotoCreationAttributes[] = ctx.req.body.photos;
     const avatarKey: string | null = ctx.req.body.avatarKey;
-
     /**
      * Handling with database transaction
      */
@@ -116,6 +114,13 @@ class UserController extends BaseController {
   public async logout(ctx: Context) {
     await this.userService.removeAuthSession(ctx.req.session.token);
     return this.view(null);
+  }
+
+  /** handles check-email-existence endpoint */
+  public async checkEmailExistence(ctx: Context) {
+    const user = await this.userService.findByEmail(ctx.req.body.email);
+
+    return this.view(!!user);
   }
 }
 
