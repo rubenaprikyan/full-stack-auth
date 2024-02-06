@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,7 +20,9 @@ import { Button } from '@/components/ui/button';
 import CustomFormField from '@/components/CustomFormField';
 
 import { useRegisterMutation } from '@/rtk-api/endpoints/users.endpoints';
+
 import useUnmount from '@/hooks/use-unmount';
+import { handleAuthenticationSuccess } from '@/lib/auth-service';
 
 import { RegistrationSchema } from './schemas';
 
@@ -71,13 +73,19 @@ function RegistrationFormHeader() {
 }
 
 export default function Register() {
-  const [register, { isLoading, error, reset }] = useRegisterMutation();
+  const [register, { isLoading, error, data, reset }] = useRegisterMutation();
   const form = useForm<FormState>({
     mode: 'onTouched',
     resolver: yupResolver(RegistrationSchema),
     defaultValues: formDefaultValues,
   });
 
+  useEffect(() => {
+    console.log(data);
+    if (!error && data) {
+      handleAuthenticationSuccess(data);
+    }
+  }, [error, data]);
   /**
    * form onSubmit handler
    */
@@ -97,10 +105,10 @@ export default function Register() {
   );
 
   // cleanups
-  useUnmount(() => {
-    // clearing register state
-    reset();
-  });
+  // useUnmount(() => {
+  //   // clearing register state
+  //   reset();
+  // });
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">

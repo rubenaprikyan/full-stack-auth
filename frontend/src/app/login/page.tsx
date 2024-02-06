@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
+import { redirect } from 'next/navigation';
 
 import {
   Card,
@@ -20,6 +21,7 @@ import { Form } from '@/components/ui/form';
 import CustomFormField from '@/components/CustomFormField';
 
 import { cn } from '@/lib/utils';
+import { handleAuthenticationSuccess } from '@/lib/auth-service';
 
 import { LoginSchema } from './schemas';
 import { useLoginMutation } from '@/rtk-api/endpoints';
@@ -53,6 +55,12 @@ export default function Login() {
     defaultValues,
   });
 
+  useEffect(() => {
+    if (!error && data) {
+      handleAuthenticationSuccess(data);
+    }
+  }, [data, error]);
+
   /**
    * login form handler
    * @param {FormState} formData
@@ -63,6 +71,16 @@ export default function Login() {
     },
     [login],
   );
+
+  const getErrorMessage = React.useCallback(() => {
+    // @ts-ignore
+    if (error && error.data.error.statusCode === 400) {
+      // @ts-ignore
+      return error.data.error.details;
+    }
+
+    return null;
+  }, [error]);
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
@@ -75,8 +93,7 @@ export default function Login() {
                 'mb mb-3 text-[0.8rem] font-medium text-destructive',
               )}
             >
-              {/* @ts-ignore */}
-              {error.data.error.details}
+              {getErrorMessage()}
             </p>
           )}
           <Form form={form} onSubmit={onSubmit} className="relative space-y-3">

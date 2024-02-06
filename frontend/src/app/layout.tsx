@@ -10,6 +10,7 @@ import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 import StoreProvider from '@/store/StoreProvider';
+import { redirect } from 'next/navigation';
 
 export default function RootLayout({
   children,
