@@ -10,7 +10,7 @@ Includes documentations, visual representations and [Design Document](./docs/DEI
 
 ### frontend
 
-Includes the front end project.
+Includes the front end project. [project](./frontend/README.md)
 
 ### backend
 
@@ -35,7 +35,7 @@ Includes the backend [project](./backend/README.md).
 
 **Frontend Tasks**
 
-- [ ] Setup Frontend project
+- [x] Setup Frontend project _[PR #10](https://github.com/rubenaprikyan/auth-task/pull/10)_
 - [ ] Setup component library and general styles
 - [ ] Create Form related components UI
 - [ ] Create Registration form page and logic
