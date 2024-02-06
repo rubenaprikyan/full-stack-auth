@@ -1,10 +1,14 @@
-"use client";
+'use client';
 
-import { Inter } from "next/font/google";
+import * as React from 'react';
+import { Inter } from 'next/font/google';
+import { ThemeProvider as NextThemesProvider } from 'next-themes';
+import { Toaster } from '@/components/ui/toaster';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
-import "./globals.css";
+import './globals.css';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export default function RootLayout({
   children,
@@ -14,8 +18,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        Welcome to Next app
-        {children}
+        <NextThemesProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+        >
+          <div className="min-h-screen">
+            {children}
+            <Toaster />
+          </div>
+          <ThemeToggle className="absolute right-6 top-6" />
+        </NextThemesProvider>
       </body>
     </html>
   );
