@@ -56,6 +56,14 @@ async function auth(req: Request, res: Response, next: NextFunction) {
       return;
     }
 
+    /*
+     * check if user active, maybe another logic need to apply here
+     * or show another error
+     **/
+    if (!session.user.active) {
+      raiseUnauthorizedException(next);
+      return;
+    }
     // currently it's impossible to solve this error without extra efforts
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error

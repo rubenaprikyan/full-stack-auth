@@ -6,6 +6,7 @@ import { User, UserAuthSession, Client, Photo } from '../database/entities';
 import S3Service from './S3Service';
 import { PhotoCreationAttributes } from '../controllers/UserController/types';
 import AuthService from './AuthService';
+import { UserWithClientAndPhotos } from '../controllers/UserController/ViewModels';
 
 class UserService {
   private userRepository: Repository<User>;
@@ -141,6 +142,44 @@ class UserService {
       .from(UserAuthSession)
       .where('token = :token', { token })
       .execute();
+  }
+
+  /**
+   * Query user, client, photos
+   * Removes sensitive fields
+   * Flats the client
+   * @param {Number} id
+   */
+  public async getUserProfileById(id: number): Promise<UserWithClientAndPhotos | null> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['client', 'client.photos'],
+      select: [
+        'id',
+        'email',
+        'firstName',
+        'lastName',
+        'role',
+        'active',
+        'createdAt',
+        'updatedAt',
+        'client',
+      ],
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return {
+      ...user,
+      client: {
+        avatar: user.client.avatar,
+        photos: user.client.photos,
+      },
+    };
   }
 }
 
