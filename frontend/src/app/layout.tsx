@@ -9,6 +9,7 @@ import { ThemeToggle } from '@/components/ThemeToggle';
 import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
+import StoreProvider from '@/store/StoreProvider';
 
 export default function RootLayout({
   children,
@@ -18,17 +19,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <NextThemesProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
-          <div className="min-h-screen">
-            {children}
-            <Toaster />
-          </div>
-          <ThemeToggle className="absolute right-6 top-6" />
-        </NextThemesProvider>
+        <StoreProvider>
+          <NextThemesProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+          >
+            <div className="min-h-screen">
+              {children}
+              <Toaster />
+            </div>
+            <ThemeToggle className="absolute right-6 top-6" />
+          </NextThemesProvider>
+        </StoreProvider>
       </body>
     </html>
   );

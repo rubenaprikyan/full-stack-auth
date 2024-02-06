@@ -1,6 +1,6 @@
 import { Response } from 'express';
 import { RequestWithFiles } from './modules/file-upload';
-import { User, UserAuthSession } from './database/entities';
+import { UserAuthSession } from './database/entities';
 
 /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export type BaseViewModel<T = any> = {

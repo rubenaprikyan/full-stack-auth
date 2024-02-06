@@ -15,7 +15,7 @@ import type {
 } from 'react-hook-form';
 
 export interface IRenderControllerProps {
-  field: ControllerRenderProps<FieldValues, any>;
+  field: ControllerRenderProps<FieldValues, any> & { disabled?: boolean };
   fieldState: ControllerFieldState;
   formState: UseFormStateReturn<FieldValues>;
 }
@@ -43,7 +43,13 @@ function CustomFormField(props: ICustomFormFieldProps) {
           <FormLabel>{props.labelText}</FormLabel>
           <FormMessage>{message}</FormMessage>
           <FormControl>
-            {props.renderController(controllerRenderProps)}
+            {props.renderController({
+              ...controllerRenderProps,
+              field: {
+                ...controllerRenderProps.field,
+                disabled: props.disabled,
+              },
+            })}
           </FormControl>
         </FormItem>
       )}
