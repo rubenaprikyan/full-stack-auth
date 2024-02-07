@@ -25,10 +25,10 @@ export default function RootLayout({
             defaultTheme="system"
             enableSystem
           >
-            <div className="min-h-screen">
-              {children}
-              <Toaster />
+            <div className="relative flex min-h-screen flex-col bg-background">
+              <main className="flex-1">{children}</main>
             </div>
+            <Toaster />
             <ThemeToggle className="absolute right-6 top-6" />
           </NextThemesProvider>
         </StoreProvider>

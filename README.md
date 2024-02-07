@@ -42,5 +42,5 @@ Includes the backend [project](./backend/README.md).
 - [x] Create Login form page and logic _[PR #14](https://github.com/rubenaprikyan/auth-task/pull/14)_
 - [x] Create Profile page _[PR #15](https://github.com/rubenaprikyan/auth-task/pull/15)_
 - [ ] Add ImagesUploader to Registration form
-- [ ] Add ImagesSlider to profile page
+- [x] Add ImagesSlider to profile page _[PR #16](https://github.com/rubenaprikyan/auth-task/pull/16)_
 - [ ] Cleanups if there is a need
