@@ -3,8 +3,8 @@ import { ViewModel } from '@/rtk-api/models/ViewModel';
 interface BaseEntity {
   id: string;
   lastName: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Photo extends BaseEntity {
@@ -14,8 +14,11 @@ interface Photo extends BaseEntity {
 
 export interface UserProfile extends BaseEntity {
   email: string;
+  fullName: string;
   firstName: string;
   lastName: string;
+  active: boolean;
+  role: string;
   client: {
     avatar: string;
     photos: Photo[];
@@ -69,9 +72,7 @@ export type LoginViewModel = ViewModel<LoginResponseData>;
  */
 export type UserProfileQueryParams = void;
 
-export type UserProfileViewModel = ViewModel<{
-  user: UserProfile;
-}>;
+export type UserProfileViewModel = ViewModel<UserProfile>;
 
 /**
  * ================ Check Email Mutation ==============

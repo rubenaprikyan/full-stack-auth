@@ -18,6 +18,7 @@ import { Form } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import CustomFormField from '@/components/CustomFormField';
+import Authenticated from '@/components/Authenticated';
 
 import { useRegisterMutation } from '@/rtk-api/endpoints/users.endpoints';
 
@@ -104,14 +105,9 @@ export default function Register() {
     [register],
   );
 
-  // cleanups
-  // useUnmount(() => {
-  //   // clearing register state
-  //   reset();
-  // });
-
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <Authenticated />
       <Card className="w-[500px]">
         <RegistrationFormHeader />
         <CardContent>

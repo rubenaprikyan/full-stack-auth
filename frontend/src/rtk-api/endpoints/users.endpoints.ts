@@ -19,6 +19,7 @@ const usersApi = api.enhanceEndpoints({}).injectEndpoints({
     getMe: build.query<UserProfileViewModel, UserProfileQueryParams>({
       query: () => ({ url: '/users/me' }),
       transformResponse: (data: UserProfileViewModel) => {
+        console.log(data);
         return data;
       },
     }),
