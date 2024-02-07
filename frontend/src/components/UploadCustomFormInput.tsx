@@ -7,6 +7,7 @@ import { Input } from '@/components/ui/input';
 import omit from 'lodash/omit';
 
 import { FileUploadResponse } from '@/rtk-api/models/files.models';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/Avatar';
 
 interface UploadCustomFormInputProps {
   name: string;
@@ -80,14 +81,25 @@ function UploadCustomFormInput({
         name={name}
         labelText={labelText}
         renderController={({ field }) => (
-          <Input
-            {...omit(field, 'value')}
-            size={100}
-            type="file"
-            multiple={multiple}
-            accept="image/jpeg"
-            onChange={onChangePhotos}
-          />
+          <>
+            <div className="max- max-w-500  max-h-100 mb-2 mt-2 flex flex-wrap gap-2 overflow-y-auto">
+              {data &&
+                data.data.map((file) => (
+                  <Avatar key={file.key} className="h-11 w-11 rounded-none">
+                    <AvatarImage src={file.location} alt={file.name} />
+                    <AvatarFallback className="h-11 w-11 rounded-none" />
+                  </Avatar>
+                ))}
+            </div>
+            <Input
+              {...omit(field, 'value')}
+              size={size}
+              type="file"
+              multiple={multiple}
+              accept="image/jpeg"
+              onChange={onChangePhotos}
+            />
+          </>
         )}
       />
     </div>

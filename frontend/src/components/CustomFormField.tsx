@@ -31,7 +31,7 @@ export interface ICustomFormFieldProps extends Omit<ControllerProps, 'render'> {
  * @constructor
  */
 function CustomFormField(props: ICustomFormFieldProps) {
-  const { error, formMessageId, isTouched } = useFormField();
+  const { error, isTouched } = useFormField();
   const message = error && isTouched ? String(error?.message) : null;
 
   return (

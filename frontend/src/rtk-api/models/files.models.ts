@@ -11,6 +11,7 @@ export type FileUploadResponse = {
   key: string;
   size: number;
   mimeType: string;
+  location: string;
   // etc.
 };
 
