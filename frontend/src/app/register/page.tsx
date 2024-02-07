@@ -15,17 +15,17 @@ import {
 } from '@/components/ui/card';
 import { Icons } from '@/components/icons';
 import { Form } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import CustomFormField from '@/components/CustomFormField';
-import Authenticated from '@/components/Authenticated';
 
 import { useRegisterMutation } from '@/rtk-api/endpoints/users.endpoints';
 
-import useUnmount from '@/hooks/use-unmount';
 import { handleAuthenticationSuccess } from '@/lib/auth-service';
 
 import { RegistrationSchema } from './schemas';
+import UserInfoStep from '@/app/register/components/UserInfoStep';
+import UploadPictureStep from '@/app/register/components/UploadPictureStep';
+import { cn } from '@/lib/utils';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 
 type FormState = yup.InferType<typeof RegistrationSchema>;
 
@@ -37,26 +37,6 @@ const formDefaultValues: FormState = {
   confirmPassword: '',
   avatarKey: '',
   photos: [],
-};
-
-const registrationFakeData = {
-  user: {
-    firstName: 'Ruben',
-    lastName: 'Aprikyan',
-    email: 'testtesttest@gmail.com',
-    password: 'testtest',
-  },
-  photos: [
-    {
-      name: 'photo1',
-      key: 'tmp/e7cb4c8d-9b87-4182-adef-2844fe84ea45.jpeg',
-    },
-    {
-      name: 'photo2',
-      key: 'tmp/9711e15a-e341-41f7-9ada-29d92fc6acf5.jpeg',
-    },
-  ],
-  avatarKey: 'tmp/9711e15a-e341-41f7-9ada-29d92fc6acf5.jpeg',
 };
 
 function RegistrationFormHeader() {
@@ -74,7 +54,9 @@ function RegistrationFormHeader() {
 }
 
 export default function Register() {
+  const [step, setStep] = React.useState<number>(1);
   const [register, { isLoading, error, data, reset }] = useRegisterMutation();
+
   const form = useForm<FormState>({
     mode: 'onTouched',
     resolver: yupResolver(RegistrationSchema),
@@ -82,16 +64,42 @@ export default function Register() {
   });
 
   useEffect(() => {
-    console.log(data);
     if (!error && data) {
       handleAuthenticationSuccess(data);
     }
   }, [error, data]);
+
+  useEffect(() => {
+    if (error && !isLoading) {
+      // @ts-ignore
+      if (error.status === 422) {
+        form.setError(
+          'email',
+          {
+            // @ts-ignore
+            message: error.data.error.details,
+          },
+          {
+            shouldFocus: true,
+          },
+        );
+        setStep(1);
+      }
+    }
+  }, [error, isLoading, form, setStep]);
+  console.log(error);
   /**
    * form onSubmit handler
    */
   const onSubmit = React.useCallback(
-    ({ firstName, lastName, password, email }: FormState) => {
+    ({
+      firstName,
+      lastName,
+      password,
+      email,
+      photos,
+      avatarKey,
+    }: FormState) => {
       register({
         user: {
           firstName,
@@ -99,7 +107,8 @@ export default function Register() {
           email,
           password,
         },
-        photos: registrationFakeData.photos,
+        photos,
+        avatarKey,
       });
     },
     [register],
@@ -107,61 +116,59 @@ export default function Register() {
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
-      <Authenticated />
+      {/*<Authenticated />*/}
       <Card className="w-[500px]">
         <RegistrationFormHeader />
         <CardContent>
           <Form form={form} onSubmit={onSubmit} className="relative space-y-3">
-            <CustomFormField
-              name="firstName"
-              labelText="First Name"
-              disabled={isLoading}
-              renderController={({ field }) => (
-                <Input {...field} placeholder="Enter your first name..." />
-              )}
+            <UserInfoStep
+              isLoading={isLoading}
+              className={cn({
+                hidden: step === 2,
+              })}
             />
-            <CustomFormField
-              name="lastName"
-              labelText="Last Name"
-              disabled={isLoading}
-              renderController={({ field }) => (
-                <Input {...field} placeholder="Enter your last name..." />
-              )}
-            />
-            <CustomFormField
-              name="email"
-              labelText="Email"
-              disabled={isLoading}
-              renderController={({ field }) => (
-                <Input {...field} placeholder="Enter your email..." />
-              )}
-            />
-            <CustomFormField
-              name="password"
-              labelText="Password"
-              disabled={isLoading}
-              renderController={({ field }) => (
-                <Input
-                  {...field}
-                  placeholder="Enter your password..."
-                  type="password"
-                />
-              )}
-            />
-            <CustomFormField
-              name="confirmPassword"
-              labelText="Confirm Password"
-              disabled={isLoading}
-              renderController={({ field }) => (
-                <Input
-                  {...field}
-                  placeholder="Please confirm your password..."
-                  type="password"
-                />
-              )}
+            <UploadPictureStep
+              isLoading={isLoading}
+              className={cn({
+                hidden: step === 1,
+              })}
             />
             <div className="flex justify-end gap-2">
-              <Button type="submit" disabled={isLoading}>
+              <Button
+                variant="ghost"
+                type="button"
+                disabled={isLoading}
+                className={cn({
+                  hidden: step == 2,
+                })}
+                onClick={() => {
+                  setStep(2);
+                }}
+              >
+                Next
+                <ArrowRight className="ml-2 h-4 w-4" />
+              </Button>
+              <Button
+                variant="ghost"
+                type="button"
+                disabled={isLoading}
+                className={cn({
+                  hidden: step == 1,
+                })}
+                onClick={() => {
+                  setStep(1);
+                }}
+              >
+                <ArrowLeft className="ml-2 h-4 w-4" />
+                Back
+              </Button>
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className={cn({
+                  hidden: step == 1,
+                })}
+              >
                 {isLoading && (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 )}

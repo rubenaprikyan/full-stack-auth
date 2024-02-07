@@ -1,31 +1,35 @@
-import { Entity, Column, OneToOne, JoinColumn, OneToMany, BeforeInsert } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToOne,
+  JoinColumn,
+  OneToMany,
+  BeforeInsert,
+  Unique,
+} from 'typeorm';
 import { UserAuthSession } from './UserAuthSession';
 import { Client } from './Client';
 import { BaseEntity } from './Base';
 
 @Entity('users')
+@Unique('email_unique', ['email'])
 export class User extends BaseEntity {
   @Column({
     type: 'varchar',
-    length: 25,
   })
   firstName: string;
 
   @Column({
     type: 'varchar',
-    length: 25,
   })
   lastName: string;
 
   @Column({
     type: 'varchar',
-    length: 51,
   })
   fullName: string;
 
-  @Column({
-    unique: true,
-  })
+  @Column()
   email: string;
 
   @Column({

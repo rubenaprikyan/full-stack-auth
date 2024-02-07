@@ -22,6 +22,7 @@ export const dbConfig = {
   password: process.env.DB_PASSWORD || '',
   port: intConf(process.env.DB_PORT || 5432),
   logging:
+    // eslint-disable-next-line no-constant-condition
     Boolean(intConf(process.env.DB_LOGGING || 0)) || true
       ? false
       : // eslint-disable-next-line no-undef, no-console

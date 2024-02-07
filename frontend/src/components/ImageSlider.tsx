@@ -55,8 +55,8 @@ function ImageSlider(props: ImageSliderProps) {
                   src={url}
                   alt={name}
                   className="aspect-square h-full w-full shadow-md"
-                  width={300}
-                  height={200}
+                  width={400}
+                  height={400}
                 />
               </CardContent>
             </Card>

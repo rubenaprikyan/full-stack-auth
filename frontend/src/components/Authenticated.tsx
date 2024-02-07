@@ -1,7 +1,9 @@
+'use client';
+
 import { redirect } from 'next/navigation';
 
 function Authenticated() {
-  const token = localStorage.getItem('authToken');
+  const token = window.localStorage.getItem('authToken');
   if (token) {
     redirect('/profile');
   }
