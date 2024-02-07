@@ -43,7 +43,7 @@ export const errorHandler = async (
   res: express.Response,
   next,
 ) => {
-  console.error(`Error: ${err instanceof BaseError}`); // TODO add proper logging
+  console.error(err); // TODO add proper logging
   next();
   // normalize errors, always it will be instanceof BaseError
   const error = normalizeError(err).getError();

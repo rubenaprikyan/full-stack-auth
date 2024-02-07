@@ -77,5 +77,3 @@ export const {
   useCheckEmailExistenceMutation,
   useGetMeQuery,
 } = usersApi;
-
-export default usersApi;

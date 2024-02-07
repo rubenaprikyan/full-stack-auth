@@ -22,5 +22,24 @@ export const RegistrationSchema = Yup.object().shape({
     .oneOf([Yup.ref('password'), null], ERROR_MESSAGES.PASSWORD_MATCH_ERROR)
     .required(ERROR_MESSAGES.FIELD_IS_REQUIRED('Confirm Password')),
   avatarKey: Yup.string(),
-  photos: Yup.array(Yup.string()),
+  photos: Yup.array()
+    .of(
+      Yup.object().shape({
+        name: Yup.string().required(),
+        key: Yup.string().required(),
+      }),
+    )
+    .required()
+    .test({
+      message: 'Required 4 - 25 images',
+      test: (arr) => {
+        // @ts-ignore
+        if (arr.length < 3) {
+          return false;
+        }
+
+        // @ts-ignore
+        return arr.length <= 24;
+      },
+    }),
 });

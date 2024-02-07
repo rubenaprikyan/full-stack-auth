@@ -85,7 +85,7 @@ class UserService {
      */
     if (avatarKey) {
       const key = `avatars/${avatarKey.split('/')[1]}`;
-      avatar = this.s3Service.getObjectUrl(key);
+      avatar = key;
 
       await this.s3Service.copyObjects([
         {
