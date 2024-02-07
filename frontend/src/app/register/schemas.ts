@@ -34,7 +34,7 @@ export const RegistrationSchema = Yup.object().shape({
       message: 'Required 4 - 25 images',
       test: (arr) => {
         // @ts-ignore
-        if (arr.length < 3) {
+        if (arr.length < 4) {
           return false;
         }
 

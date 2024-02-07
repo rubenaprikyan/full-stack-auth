@@ -1,4 +1,4 @@
-import { DataSource } from 'typeorm';
+import { DataSource, QueryFailedError } from 'typeorm';
 import { Context } from '../../types';
 import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
@@ -8,6 +8,7 @@ import { LoginViewModel, RegistrationViewModel } from './ViewModels';
 import UserService from '../../services/UserService';
 import { BadRequest } from '../../modules/exceptions';
 import AuthService from '../../services/AuthService';
+import { UnprocessableEntity } from '../../modules/exceptions/UnprocessableEntity';
 
 class UserController extends BaseController {
   private userService: UserService;
@@ -70,33 +71,42 @@ class UserController extends BaseController {
      */
     const { auth_token, userId } = await this.dataSource.manager.transaction(
       async manager => {
-        // create user
-        const userEntity = this.userService.createUser(user);
-        const newUser = await manager.save(userEntity);
+        try {
+          // create user
+          const userEntity = this.userService.createUser(user);
+          const newUser = await manager.save(userEntity);
 
-        // create client
-        const clientEntity = await this.userService.createClient(newUser, avatarKey);
-        const newClient = await manager.save(clientEntity);
+          // create client
+          const clientEntity = await this.userService.createClient(newUser, avatarKey);
+          const newClient = await manager.save(clientEntity);
 
-        // create auth.ts token
-        const authSessionEntity = this.userService.createAuthSession(newUser);
-        const newSession = await manager.save(authSessionEntity);
+          // create auth.ts token
+          const authSessionEntity = this.userService.createAuthSession(newUser);
+          const newSession = await manager.save(authSessionEntity);
 
-        // create photos
-        const photoEntities = await this.userService.createProfilePhotos(
-          photos,
-          newClient,
-        );
-        await manager.save(photoEntities);
+          // create photos
+          const photoEntities = await this.userService.createProfilePhotos(
+            photos,
+            newClient,
+          );
+          await manager.save(photoEntities);
 
-        newUser.client = newClient;
-        // save to database
-        await manager.save(newUser);
+          newUser.client = newClient;
+          // save to database
+          await manager.save(newUser);
 
-        return {
-          userId: newUser.id,
-          auth_token: newSession.token,
-        };
+          return {
+            userId: newUser.id,
+            auth_token: newSession.token,
+          };
+        } catch (error) {
+          if (error instanceof QueryFailedError && error.driverError.code === '23505') {
+            // checking unique constraint code, only email is unique there
+            throw new UnprocessableEntity('Email already exists.');
+          } else {
+            throw error;
+          }
+        }
       },
     );
 

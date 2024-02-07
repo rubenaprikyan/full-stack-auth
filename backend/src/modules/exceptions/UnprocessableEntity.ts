@@ -1,8 +1,8 @@
 import { BaseError } from './BaseError';
 
-export class ValidationError extends BaseError {
+export class UnprocessableEntity extends BaseError {
   constructor(details) {
     // used "unprocessable entity" status code
-    super(details, 'Validation Error', 422);
+    super(details, 'Unprocessable Entity', 422);
   }
 }

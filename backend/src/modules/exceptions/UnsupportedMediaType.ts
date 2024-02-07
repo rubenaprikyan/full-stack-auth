@@ -1,7 +1,7 @@
 import { BaseError } from './BaseError';
 
 export class UnsupportedMediaType extends BaseError {
-  constructor(message) {
-    super(message, 'Unsupported media type', 415);
+  constructor(details) {
+    super(details, 'Unsupported media type', 415);
   }
 }

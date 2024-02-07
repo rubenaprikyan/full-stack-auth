@@ -68,6 +68,26 @@ export default function Register() {
       handleAuthenticationSuccess(data);
     }
   }, [error, data]);
+
+  useEffect(() => {
+    if (error && !isLoading) {
+      // @ts-ignore
+      if (error.status === 422) {
+        form.setError(
+          'email',
+          {
+            // @ts-ignore
+            message: error.data.error.details,
+          },
+          {
+            shouldFocus: true,
+          },
+        );
+        setStep(1);
+      }
+    }
+  }, [error, isLoading, form, setStep]);
+  console.log(error);
   /**
    * form onSubmit handler
    */
