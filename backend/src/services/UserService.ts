@@ -77,7 +77,7 @@ class UserService {
    * @param {String} avatarKey
    */
   public async createClient(userEntity: User, avatarKey?: string) {
-    let avatar = '/avatars/default.jpeg';
+    let avatar = 'avatars/default.jpeg';
 
     /**
      * if there is avatar uploaded with profile copy object to s3 avatars folder
@@ -164,6 +164,7 @@ class UserService {
         'createdAt',
         'updatedAt',
         'client',
+        'fullName',
       ],
     });
 
@@ -176,7 +177,7 @@ class UserService {
     return {
       ...user,
       client: {
-        avatar: user.client.avatar,
+        avatar: this.s3Service.getObjectUrl(user.client.avatar),
         photos: user.client.photos,
       },
     };

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useForm } from 'react-hook-form';
-import { redirect } from 'next/navigation';
 
 import {
   Card,
@@ -25,6 +24,10 @@ import { handleAuthenticationSuccess } from '@/lib/auth-service';
 
 import { LoginSchema } from './schemas';
 import { useLoginMutation } from '@/rtk-api/endpoints';
+import Authenticated from '@/components/Authenticated';
+import useUnmount from '@/hooks/use-unmount';
+import { Simulate } from 'react-dom/test-utils';
+import reset = Simulate.reset;
 
 type FormState = yup.InferType<typeof LoginSchema>;
 
@@ -48,7 +51,7 @@ function LoginFormHeader() {
 }
 
 export default function Login() {
-  const [login, { isLoading, error, data }] = useLoginMutation();
+  const [login, { isLoading, error, data, reset }] = useLoginMutation();
   const form = useForm<FormState>({
     mode: 'onTouched',
     resolver: yupResolver(LoginSchema),
@@ -84,6 +87,7 @@ export default function Login() {
 
   return (
     <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+      <Authenticated />
       <Card className="w-[400px]">
         <LoginFormHeader />
         <CardContent>

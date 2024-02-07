@@ -5,6 +5,7 @@ import {
   combineReducers,
 } from '@reduxjs/toolkit';
 import api from '@/rtk-api/rtkBase';
+import { rtkQueryErrorLogger } from '@/rtk-api/errorHandler';
 
 /**
  * Redux store configuration
@@ -14,7 +15,7 @@ const store = configureStore({
     [api.reducerPath]: api.reducer,
   }),
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.middleware),
+    getDefaultMiddleware().concat(api.middleware).concat(rtkQueryErrorLogger),
 });
 
 // export type AppDispatch = typeof store.dispatch;

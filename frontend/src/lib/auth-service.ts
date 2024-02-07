@@ -18,6 +18,5 @@ export function handleAuthenticationSuccess(response: LoginViewModel) {
  */
 export function handleLogout() {
   localStorage.removeItem('authToken');
-
-  redirect('/login');
+  window.location.href = '/login';
 }
