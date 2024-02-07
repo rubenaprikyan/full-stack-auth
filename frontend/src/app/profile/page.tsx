@@ -3,13 +3,16 @@
 import ProfileInfo from './components/ProfileInfo';
 import { useGetMeQuery } from '@/rtk-api/endpoints';
 import React from 'react';
+import ImageSlider from '@/components/ImageSlider';
 
 export default function Profile() {
   const { data, error, isLoading } = useGetMeQuery();
-  console.log(error);
   return (
-    <div className="absolute left-1/2 top-1/3 mt-20 flex -translate-x-1/2 -translate-y-1/2 flex-col gap-2">
+    <div className="mt-10 flex flex-col items-center justify-start gap-3">
       <ProfileInfo user={data?.data} isLoading={isLoading} error={error} />
+      {data && data.data.client.photos && (
+        <ImageSlider images={data.data.client.photos} />
+      )}
     </div>
   );
 }
