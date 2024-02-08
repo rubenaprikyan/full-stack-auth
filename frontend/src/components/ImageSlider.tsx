@@ -69,4 +69,4 @@ function ImageSlider(props: ImageSliderProps) {
   );
 }
 
-export default ImageSlider;
+export default React.memo<ImageSliderProps>(ImageSlider);

@@ -72,12 +72,12 @@ export default function Register() {
   useEffect(() => {
     if (error && !isLoading) {
       // @ts-ignore
-      if (error.status === 422) {
+      if (error.statusCode === 422) {
         form.setError(
           'email',
           {
             // @ts-ignore
-            message: error.data.error.details,
+            message: error.details,
           },
           {
             shouldFocus: true,
@@ -87,7 +87,7 @@ export default function Register() {
       }
     }
   }, [error, isLoading, form, setStep]);
-  console.log(error);
+
   /**
    * form onSubmit handler
    */

@@ -4,9 +4,11 @@ import { DataSource, DeepPartial, Repository } from 'typeorm';
 import { User, UserAuthSession, Client, Photo } from '../database/entities';
 
 import S3Service from './S3Service';
-import { PhotoCreationAttributes } from '../controllers/UserController/types';
 import AuthService from './AuthService';
+
 import { UserWithClientAndPhotos } from '../controllers/UserController/ViewModels';
+// eslint-disable-next-line max-len
+import { PhotoCreationAttributes } from '../controllers/UserController/dtos/RegistrationDto';
 
 class UserService {
   private userRepository: Repository<User>;

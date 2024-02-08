@@ -1,4 +1,5 @@
 import api from '@/rtk-api/rtkBase';
+import { transformErrorResponse } from '../transformers/generalErrorResponseTransformer';
 
 import {
   FilesUploadQueryBody,
@@ -17,9 +18,7 @@ const filesApi = api.enhanceEndpoints({}).injectEndpoints({
         formData: true,
         body,
       }),
-      transformResponse: (data: FileUploadViewModel) => {
-        return data;
-      },
+      transformErrorResponse,
     }),
   }),
 });

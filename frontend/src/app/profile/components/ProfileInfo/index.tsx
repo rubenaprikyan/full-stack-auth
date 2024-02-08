@@ -6,13 +6,13 @@ import React from 'react';
 import ProfileInfoLoader from '@/app/profile/components/ProfileInfo/Loader';
 import { Button } from '@/components/ui/button';
 import { handleLogout } from '@/lib/auth-service';
-export interface ProfileInfo {
+export interface ProfileInfoProps {
   user?: UserProfile;
   isLoading: boolean;
   error: any;
 }
 
-function ProfileInfo({ user, isLoading, error }: ProfileInfo) {
+function ProfileInfo({ user, isLoading, error }: ProfileInfoProps) {
   return (
     <Card className="w-[500px]">
       {(isLoading || error) && <ProfileInfoLoader />}
@@ -76,4 +76,4 @@ function ProfileInfo({ user, isLoading, error }: ProfileInfo) {
   );
 }
 
-export default ProfileInfo;
+export default React.memo<ProfileInfoProps>(ProfileInfo);

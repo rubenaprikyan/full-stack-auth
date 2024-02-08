@@ -27,6 +27,9 @@ function UploadPictureStep({ isLoading, className }: UploadPictureStepProps) {
             key: f.key,
           }))
         }
+        transformFakeValue={() =>
+          Array(4).fill(() => ({ name: 'fake', key: 'fake' }))
+        }
         multiple
       />
     </div>

@@ -23,14 +23,12 @@ export const ERROR_DETAILS = {
  * class FileUploadException
  */
 export class FileUploadException extends Error {
-  public message: string;
-
   constructor(
     public debug: string,
+    public message: string,
     public details: unknown,
   ) {
     super();
-    this.message = ERROR_DETAILS[debug].message;
     Object.setPrototypeOf(this, FileUploadException.prototype);
   }
 }

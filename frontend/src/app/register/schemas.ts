@@ -4,18 +4,20 @@ import { ERROR_MESSAGES } from '@/lib/utils';
 
 export const RegistrationSchema = Yup.object().shape({
   firstName: Yup.string()
-    .min(3, ERROR_MESSAGES.FIELD_MIN_ERROR_MESSAGE('First Name', 3))
-    .max(20, ERROR_MESSAGES.FIELD_MAX_ERROR_MESSAGE('First Name', 20))
+    .min(2, ERROR_MESSAGES.FIELD_MIN_ERROR_MESSAGE('First Name', 2))
+    .max(25, ERROR_MESSAGES.FIELD_MAX_ERROR_MESSAGE('First Name', 25))
     .required(ERROR_MESSAGES.FIELD_IS_REQUIRED('First Name')),
   lastName: Yup.string()
-    .min(3, ERROR_MESSAGES.FIELD_MIN_ERROR_MESSAGE('Last Name', 3))
-    .max(20, ERROR_MESSAGES.FIELD_MAX_ERROR_MESSAGE('Last Name', 20))
+    .min(2, ERROR_MESSAGES.FIELD_MIN_ERROR_MESSAGE('Last Name', 2))
+    .max(25, ERROR_MESSAGES.FIELD_MAX_ERROR_MESSAGE('Last Name', 25))
     .required(ERROR_MESSAGES.FIELD_IS_REQUIRED('Last Name')),
   email: Yup.string()
     .email()
     .required(ERROR_MESSAGES.FIELD_IS_REQUIRED('Email')),
   password: Yup.string()
-    .min(8, ERROR_MESSAGES.FIELD_MIN_ERROR_MESSAGE('Password', 8))
+    .min(6, ERROR_MESSAGES.FIELD_MIN_ERROR_MESSAGE('Password', 6))
+    .max(50, ERROR_MESSAGES.FIELD_MAX_ERROR_MESSAGE('Password', 50))
+    .matches(/[0-9]/, 'Password must contain at least one numeric digit.')
     .required(ERROR_MESSAGES.FIELD_IS_REQUIRED('Password')),
   confirmPassword: Yup.string()
     // @ts-ignore
@@ -29,7 +31,6 @@ export const RegistrationSchema = Yup.object().shape({
         key: Yup.string().required(),
       }),
     )
-    .required()
     .test({
       message: 'Required 4 - 25 images',
       test: (arr) => {
@@ -41,5 +42,7 @@ export const RegistrationSchema = Yup.object().shape({
         // @ts-ignore
         return arr.length <= 24;
       },
-    }),
+    })
+    // to make typesafe for typescript
+    .default([]),
 });

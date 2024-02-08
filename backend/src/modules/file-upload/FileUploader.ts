@@ -46,8 +46,8 @@ class FileUploader {
     if (!this.options.allowedMediaTypes.includes(part.info.mimeType)) {
       return this.abortRequestWithError(
         ERROR_DETAILS.UNSUPPORTED_MEDIA_TYPE_ERROR.debug,
+        `Media type ${part.info.mimeType} is not allowed.`,
         {
-          reason: `Media type ${part.info.mimeType} is not allowed.`,
           allowedMediaTypes: this.options.allowedMediaTypes,
         },
       );
@@ -93,7 +93,11 @@ class FileUploader {
 
     // Handling options limits exceeded cases caught by busboy
     part.fileStream.on('limit', inf => {
-      this.abortRequestWithError(ERROR_DETAILS.FILE_SIZE_LIMIT_EXCEEDED_ERROR.debug, inf);
+      this.abortRequestWithError(
+        ERROR_DETAILS.FILE_SIZE_LIMIT_EXCEEDED_ERROR.debug,
+        `Allowed max ${this.options.maxFileSize / 1024} mb.`,
+        inf,
+      );
     });
   }
 
@@ -150,7 +154,11 @@ class FileUploader {
    */
   public handleFileStreamError(err: Error, part: Part): void {
     // raise can't read stream error, figure out reason as much as possible
-    const exception = new FileUploadException(ERROR_DETAILS.STREAM_READ_ERROR.debug, err);
+    const exception = new FileUploadException(
+      ERROR_DETAILS.STREAM_READ_ERROR.debug,
+      "Can't read stream",
+      err,
+    );
     invariant('ERROR :: ', err, part);
     this.ctx.next(exception);
   }
@@ -168,9 +176,14 @@ class FileUploader {
    * this function sends the FileUploadException error to the express error handler
    * @param debug
    * @param details
+   * @param message
    */
-  public abortRequestWithError(debug: string, details: Record<string, unknown>) {
-    const error = new FileUploadException(debug, details);
+  public abortRequestWithError(
+    debug: string,
+    message: string,
+    details: Record<string, unknown>,
+  ) {
+    const error = new FileUploadException(debug, message, details);
 
     /* TODO check the reason and unpipe or resume other streams
      * i.e. do clean ups, and do garbage collection here

@@ -35,7 +35,11 @@ function middleware(
 
     // Handling files count limit
     bb.on('filesLimit', info => {
-      uploader.abortRequestWithError(ERROR_DETAILS.FILES_COUNT_LIMIT_ERROR.debug, info);
+      uploader.abortRequestWithError(
+        ERROR_DETAILS.FILES_COUNT_LIMIT_ERROR.debug,
+        `Allowed max ${opts.maxFilesCount} files.`,
+        info,
+      );
     });
 
     // Handling close multipart/form-data stream

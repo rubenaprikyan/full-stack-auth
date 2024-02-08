@@ -63,4 +63,4 @@ function UserInfoStep({ isLoading, className }: UserInfoStepProps) {
   );
 }
 
-export default UserInfoStep;
+export default React.memo<UserInfoStepProps>(UserInfoStep);
