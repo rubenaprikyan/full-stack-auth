@@ -77,9 +77,9 @@ export default function Login() {
 
   const getErrorMessage = React.useCallback(() => {
     // @ts-ignore
-    if (error && error.data.error.statusCode === 400) {
+    if (error && error.statusCode === 400) {
       // @ts-ignore
-      return error.data.error.details;
+      return error.details;
     }
 
     return null;
