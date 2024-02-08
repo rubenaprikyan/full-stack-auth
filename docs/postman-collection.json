@@ -1,0 +1,374 @@
+{
+	"info": {
+		"_postman_id": "a3a79ced-6b49-4bef-b02e-93d3949a024c",
+		"name": "auth-api",
+		"description": "# Auth Task API Overivew\n\nThis collection includes apis of auth task. This API follows to REST principles.\n\nEverything is resource here. All endpoints besides `ping` starts with `/api` .\n\n**Endpoint template**\n\n`HTTP METHOD` `api/`\n\n**Example:**\n\nIf you want to work with `users` you need to use `api/users`\n\n## Unified Successfull Response\n\nAll responses with this api are unified and usees the following template.\n\n``` typescript\nresponse: {\n  body: {\n    data: any // based on resource\n  },\n  statusCode // based on status code sent from server (201, 200 etc following to  rest principles)\n}\n\n ```\n\nAll responses have \"data\" key in the response.body which is the resource you are quering. For special cases there will be other keys, like \"pagination\" etc.\n\n## Unified Failure Response\n\nEach request has unified response for failed cases (statusCode >= 400, following to the rest principles) and uses the following template\n\n``` typescript\nresponse: {\n  body: {\n    error: {\n       message: string,\n       details: // any object which may include further details, like validations\n       debug?: string, // there are special strings for each errors might be useful for development mode // used for debugging reaosons\n       statusCode: number\n    },\n} // based on resource\n  },\n  statusCode // based on status code sent from server (201, 200 etc following to  rest principles)\n}\n\n ```",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "17779574",
+		"_collection_link": "https://ultras-io.postman.co/workspace/95667896-c9c3-4350-852c-8dc31ceacb9b/collection/17779574-a3a79ced-6b49-4bef-b02e-93d3949a024c?action=share&source=collection_link&creator=17779574"
+	},
+	"item": [
+		{
+			"name": "users",
+			"item": [
+				{
+					"name": "register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var template = `",
+									"<canvas id=\"myChart\" height=\"75\"></canvas>",
+									"",
+									"<script src=\"https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js\"></script> ",
+									"",
+									"<script>",
+									"    var ctx = document.getElementById(\"myChart\");",
+									"",
+									"    var myChart = new Chart(ctx, {",
+									"        type: \"bar\",",
+									"        data: {",
+									"            labels: [\"Test\"],",
+									"            datasets: [{",
+									"                data: [0],",
+									"                ",
+									"                // Change these colours to customize the chart",
+									"                backgroundColor: [\"#003f5c\", \"#58508d\", \"#bc5090\", \"#ff6361\", \"#ffa600\"],",
+									"            }]",
+									"        },",
+									"        options: {",
+									"            legend: { display: false },",
+									"            title: {",
+									"                display: true,",
+									"                text: 'Test Data'",
+									"            },",
+									"            scales: {",
+									"                xAxes: [{",
+									"                    display: true,",
+									"                    scaleLabel: {",
+									"                        display: true,",
+									"                        labelString: 'Items'",
+									"                    }",
+									"                }],",
+									"                yAxes: [{",
+									"                    display: true,",
+									"                    scaleLabel: {",
+									"                        display: true,",
+									"                        labelString: 'Count'",
+									"                    }",
+									"                }]",
+									"            }",
+									"        }",
+									"",
+									"    });",
+									"",
+									"    // Access the data passed to pm.visualizer.set() from the JavaScript",
+									"    // code of the Visualizer template",
+									"    pm.getData(function (err, value) {",
+									"        myChart.data.datasets[0].data = [value.response.data.test];",
+									"        myChart.update();",
+									"    });",
+									"",
+									"</script>`;",
+									"",
+									"function constructVisualizerPayload() {",
+									"    var res = pm.response.json();",
+									"",
+									"    var visualizerData = {",
+									"        ",
+									"        // Labels take an array of strings",
+									"        labels: [\"Test\"],",
+									"        ",
+									"        // Data takes an array of numbers",
+									"        data: [res.data.test]",
+									"    };",
+									"",
+									"    return {response: visualizerData};",
+									"}",
+									"",
+									"pm.visualizer.set(template, constructVisualizerPayload());"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"user\": {\n    \"firstName\": \"Ruben\",\n    \"lastName\": \"Aprikyan\",\n    \"email\": \"testteste432564.com\",\n    \"password\": \"2\"\n  },\n  \"photos\": [\n        {\n            \"name\": \"photo1\",\n            \"key\": \"tmp/e7cb4c8d-9b87-4182-adef-2844fe84ea45.jpeg\"\n        },\n        {\n            \"name\": \"photo2\",\n            \"key\": \"tmp/9711e15a-e341-41f7-9ada-29d92fc6acf5.jpeg\"\n        },\n        {\n            \"name\": \"photo2\",\n            \"key\": \"tmp/9711e15a-e341-41f7-9ada-29d92fc6acf5.jpeg\"\n        },\n        {\n            \"name\": \"photo2\",\n            \"key\": \"tmp/9711e15a-e341-41f7-9ada-29d92fc6acf5.jpeg\"\n        }\n  ],\n  \"avatarKey\": \"tmp/9711e15a-e341-41f7-9ada-29d92fc6acf5.jpeg\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-url}}/users/register",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"users",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check-email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n   \"email\": \"user100@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-url}}/users/check-email-existence",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"users",
+								"check-email-existence"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzYWx0IjoiMHN0WFNkVmFBQUJrTzJDYllmQUJ0RVZPYW10cFZjRHAiLCJlbWFpbCI6InJ1YmVuYXByaWt5YW4yQGdtYWlsLmNvbSIsImlhdCI6MTcwNzE3ODY2NiwiZXhwIjoxNzA3MjY1MDY2fQ.i5s3CotjqPRRHudEUgl_xrZfPj9aDWGPdI7wOlzgNIr2jTRWgBHIn_60yVE9ECadpkPe2d2k6jY14Cfb1kOq8Q",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{api-url}}/users/me",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"users",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzYWx0IjoiMHN0WFNkVmFBQUJrTzJDYllmQUJ0RVZPYW10cFZjRHAiLCJlbWFpbCI6InJ1YmVuYXByaWt5YW4yQGdtYWlsLmNvbSIsImlhdCI6MTcwNzE3NjE0MywiZXhwIjoxNzA3MjYyNTQzfQ.aijb606Ve2zhtZq-CrVY_EPoyRVvgjZ6dQCrwHK7GkdG4TQkOp0T7b26yM8_bhVbSn14z7XZB4LkONs00VCVHg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{api-url}}/users/logout",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"users",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"testtest1@gmail.com\",\n    \"password\": \"rubenruben1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-url}}/users/login",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"users",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "### Error Response\n\n``` json\n\"error\": {\n        \"statusCode\": 400,\n        \"message\": \"Validation Error\"\n        \"details\": [\n            {\n                \"key\": \"user\",\n                \"details\": [\n                    {\n                        \"key\": \"firstName\",\n                        \"details\": {\n                            \"minLength\": \"First Name should have at least 2 characters\"\n                        }\n                    },\n                    {\n                        \"key\": \"email\",\n                        \"details\": {\n                            \"isEmail\": \"Invalid email format\"\n                        }\n                    },\n                    {\n                        \"key\": \"password\",\n                        \"details\": {\n                            \"minLength\": \"Password should have at least 6 characters\"\n                        }\n                    }\n                ]\n            },\n            {\n                \"key\": \"photos\",\n                \"details\": {\n                    \"arrayMaxSize\": \"At most 25 photos are allowed\",\n                    \"arrayMinSize\": \"At least 4 photos are required\",\n                    \"isArray\": \"Photos should be an array\"\n                }\n            }\n        ]\n    }\n}\n\n ```"
+		},
+		{
+			"name": "files",
+			"item": [
+				{
+					"name": "upload",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "photo1",
+									"type": "file",
+									"src": "/Users/rubenaprikyan/Desktop/photos/photo1.jpeg"
+								},
+								{
+									"key": "photo2",
+									"type": "file",
+									"src": "/Users/rubenaprikyan/Desktop/photos/photo2.jpeg"
+								},
+								{
+									"key": "photo3",
+									"type": "file",
+									"src": "/Users/rubenaprikyan/Desktop/photos/photo3.jpeg"
+								},
+								{
+									"key": "photo4",
+									"type": "file",
+									"src": "/Users/rubenaprikyan/Desktop/photos/photo4.jpeg",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api-url}}/files/upload",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"files",
+								"upload"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "upload/configuration",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzYWx0IjoiMHN0WFNkVmFBQUJrTzJDYllmQUJ0RVZPYW10cFZjRHAiLCJlbWFpbCI6InJ1YmVuYXByaWt5YW4yQGdtYWlsLmNvbSIsImlhdCI6MTcwNzE3NjE0MywiZXhwIjoxNzA3MjYyNTQzfQ.aijb606Ve2zhtZq-CrVY_EPoyRVvgjZ6dQCrwHK7GkdG4TQkOp0T7b26yM8_bhVbSn14z7XZB4LkONs00VCVHg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"pictures\": [\n        \"tmp/192f9765-615a-4c49-9be2-a38d44749c87.png\",\n        \"tmp/32cab130-31cf-4d31-812b-7063e697109e.png\"\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{api-url}}/files/upload/configuration",
+							"host": [
+								"{{api-url}}"
+							],
+							"path": [
+								"files",
+								"upload",
+								"configuration"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"description": "This api is for file uploadings"
+		}
+	],
+	"auth": {
+		"type": "inherit"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://farming-simulator.pstmn.io",
+			"disabled": true
+		},
+		{
+			"key": "api-url",
+			"value": "http://localhost:4000/api",
+			"type": "string"
+		},
+		{
+			"key": "api-host",
+			"value": "http://localhost:4000/api",
+			"type": "string",
+			"disabled": true
+		}
+	]
+}

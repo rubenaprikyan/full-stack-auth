@@ -1,5 +1,5 @@
 ## How to run the project
-[Postman Collection](https://identity.getpostman.com/login?continue=https%3A%2F%2Fultras-io.postman.co%2Fworkspace%2FUltras-Workspace~95667896-c9c3-4350-852c-8dc31ceacb9b%2Fcollection%2F17779574-a3a79ced-6b49-4bef-b02e-93d3949a024c%3Faction%3Dshare%26creator%3D17779574)
+[Postman Collection](../docs/postman-collection.json)
 
 To work with the back end project please go to the /backend folder in your terminal
 
