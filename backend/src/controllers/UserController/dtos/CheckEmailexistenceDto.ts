@@ -1,16 +1,14 @@
-import { IsString, IsEmail, validateOrReject } from 'class-validator';
 import { plainToClass } from 'class-transformer';
+import { IsEmail, IsString, validateOrReject } from 'class-validator';
 import { ValidationError } from '../../../modules/exceptions';
 
-export class LoginDto {
-  @IsEmail({}, { message: 'Invalid email format' })
+export class CheckEmailExistenceDto {
+  @IsEmail()
+  @IsString({ message: 'Avatar key should be a string' })
   email: string;
 
-  @IsString()
-  password: string;
-
   static async validateAndReturn(body: Record<string, never>) {
-    const bodyObject: LoginDto = plainToClass(LoginDto, body);
+    const bodyObject: CheckEmailExistenceDto = plainToClass(CheckEmailExistenceDto, body);
 
     try {
       await validateOrReject(bodyObject);

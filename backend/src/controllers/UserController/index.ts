@@ -10,6 +10,7 @@ import AuthService from '../../services/AuthService';
 import { UnprocessableEntity } from '../../modules/exceptions/UnprocessableEntity';
 import { RegistrationDto } from './dtos/RegistrationDto';
 import { LoginDto } from './dtos/LoginDto';
+import { CheckEmailExistenceDto } from './dtos/CheckEmailexistenceDto';
 
 class UserController extends BaseController {
   private userService: UserService;
@@ -135,7 +136,8 @@ class UserController extends BaseController {
 
   /** handles check-email-existence endpoint */
   public async checkEmailExistence(ctx: Context) {
-    const user = await this.userService.findByEmail(ctx.req.body.email);
+    const transformedBody = await CheckEmailExistenceDto.validateAndReturn(ctx.req.body);
+    const user = await this.userService.findByEmail(transformedBody.email);
 
     return this.view(!!user);
   }
