@@ -31,7 +31,7 @@ Includes the backend [project](./backend/README.md).
 - [x] Create authentication middleware and AuthService _[PR #7](https://github.com/rubenaprikyan/auth-task/pull/7)_
 - [x] Create `/api/users/login` APIs and login logic _[PR #8](https://github.com/rubenaprikyan/auth-task/pull/8)_
 - [x] Create `/api/users/me` API _[PR #9](https://github.com/rubenaprikyan/auth-task/pull/9)_
-- [ ] Cleanup project and documentation
+- [x] Cleanup project and documentation
 
 **Frontend Tasks**
 
@@ -43,4 +43,4 @@ Includes the backend [project](./backend/README.md).
 - [x] Create Profile page _[PR #15](https://github.com/rubenaprikyan/auth-task/pull/15)_
 - [x] Add ImagesUploader to Registration form _[PR #17](https://github.com/rubenaprikyan/auth-task/pull/17)_
 - [x] Add ImagesSlider to profile page _[PR #16](https://github.com/rubenaprikyan/auth-task/pull/16)_
-- [ ] Cleanups if there is a need
+- [x] Cleanups if there is a need

@@ -10,6 +10,7 @@ import {
   LoginViewModel,
   LoginQueryBody,
 } from '../models/users.models';
+import { transformErrorResponse } from '@/rtk-api/transformers/generalErrorResponseTransformer';
 
 const usersApi = api.enhanceEndpoints({}).injectEndpoints({
   endpoints: (build) => ({
@@ -19,7 +20,6 @@ const usersApi = api.enhanceEndpoints({}).injectEndpoints({
     getMe: build.query<UserProfileViewModel, UserProfileQueryParams>({
       query: () => ({ url: '/users/me' }),
       transformResponse: (data: UserProfileViewModel) => {
-        console.log(data);
         return data;
       },
     }),
@@ -33,9 +33,7 @@ const usersApi = api.enhanceEndpoints({}).injectEndpoints({
         method: 'POST',
         body,
       }),
-      transformResponse: (data: RegistrationViewModel) => {
-        return data;
-      },
+      transformErrorResponse,
     }),
 
     /**
@@ -47,25 +45,7 @@ const usersApi = api.enhanceEndpoints({}).injectEndpoints({
         method: 'POST',
         body,
       }),
-      transformResponse: (data: RegistrationViewModel) => {
-        return data;
-      },
-    }),
-    /**
-     * check-email-existence endpoint handler
-     */
-    checkEmailExistence: build.mutation<
-      CheckEmailViewModel,
-      CheckEmailRequestBody
-    >({
-      query: (body) => ({
-        url: '/users/check-email-existence',
-        method: 'POST',
-        body,
-      }),
-      transformResponse: (data: CheckEmailViewModel) => {
-        return data;
-      },
+      transformErrorResponse,
     }),
   }),
 });
@@ -74,6 +54,5 @@ export const {
   endpoints: { getMe },
   useLoginMutation,
   useRegisterMutation,
-  useCheckEmailExistenceMutation,
   useGetMeQuery,
 } = usersApi;

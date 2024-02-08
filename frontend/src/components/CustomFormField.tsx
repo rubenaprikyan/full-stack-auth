@@ -58,4 +58,4 @@ function CustomFormField(props: ICustomFormFieldProps) {
 }
 
 CustomFormField.displayName = 'CustomFormField';
-export default CustomFormField;
+export default React.memo<ICustomFormFieldProps>(CustomFormField);

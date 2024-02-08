@@ -1,6 +1,5 @@
 import { DataSource, QueryFailedError } from 'typeorm';
 import { Context } from '../../types';
-import { PhotoCreationAttributes, UserCreationAttributes } from './types';
 
 import BaseController from '../BaseController';
 
@@ -9,6 +8,9 @@ import UserService from '../../services/UserService';
 import { BadRequest } from '../../modules/exceptions';
 import AuthService from '../../services/AuthService';
 import { UnprocessableEntity } from '../../modules/exceptions/UnprocessableEntity';
+import { RegistrationDto } from './dtos/RegistrationDto';
+import { LoginDto } from './dtos/LoginDto';
+import { CheckEmailExistenceDto } from './dtos/CheckEmailexistenceDto';
 
 class UserController extends BaseController {
   private userService: UserService;
@@ -32,14 +34,15 @@ class UserController extends BaseController {
    * @param ctx
    */
   public async login(ctx: Context): Promise<LoginViewModel> {
-    const user = await this.userService.findByEmail(ctx.req.body.email);
+    const transformedBody = await LoginDto.validateAndReturn(ctx.req.body);
+    const user = await this.userService.findByEmail(transformedBody.email);
 
     if (!user) {
       throw new BadRequest('Invalid Email or Password');
     }
 
     const isPasswordMatch = AuthService.comparePasswordHashes(
-      ctx.req.body.password,
+      transformedBody.password,
       user.password,
     );
 
@@ -63,21 +66,27 @@ class UserController extends BaseController {
    * @param ctx
    */
   public async register(ctx: Context): Promise<RegistrationViewModel> {
-    const user: UserCreationAttributes = ctx.req.body.user;
-    const photos: PhotoCreationAttributes[] = ctx.req.body.photos;
-    const avatarKey: string | null = ctx.req.body.avatarKey;
+    const transformedBody = await RegistrationDto.validateAndReturn(ctx.req.body);
+
     /**
      * Handling with database transaction
      */
     const { auth_token, userId } = await this.dataSource.manager.transaction(
+      /*
+       * TODO manage file storage effectively,
+       *  rollback transaction if there is s3 service error
+       */
       async manager => {
         try {
           // create user
-          const userEntity = this.userService.createUser(user);
+          const userEntity = this.userService.createUser(transformedBody.user);
           const newUser = await manager.save(userEntity);
 
           // create client
-          const clientEntity = await this.userService.createClient(newUser, avatarKey);
+          const clientEntity = await this.userService.createClient(
+            newUser,
+            transformedBody.avatarKey,
+          );
           const newClient = await manager.save(clientEntity);
 
           // create auth.ts token
@@ -86,13 +95,12 @@ class UserController extends BaseController {
 
           // create photos
           const photoEntities = await this.userService.createProfilePhotos(
-            photos,
+            transformedBody.photos,
             newClient,
           );
           await manager.save(photoEntities);
 
           newUser.client = newClient;
-          // save to database
           await manager.save(newUser);
 
           return {
@@ -113,7 +121,7 @@ class UserController extends BaseController {
     return this.view({
       // TODO change to runtime filtering without database query
       user: await this.userService.getUserProfileById(userId),
-      auth_token,
+      auth_token: auth_token,
     });
   }
 
@@ -128,7 +136,8 @@ class UserController extends BaseController {
 
   /** handles check-email-existence endpoint */
   public async checkEmailExistence(ctx: Context) {
-    const user = await this.userService.findByEmail(ctx.req.body.email);
+    const transformedBody = await CheckEmailExistenceDto.validateAndReturn(ctx.req.body);
+    const user = await this.userService.findByEmail(transformedBody.email);
 
     return this.view(!!user);
   }

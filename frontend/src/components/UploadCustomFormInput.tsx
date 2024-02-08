@@ -13,6 +13,7 @@ interface UploadCustomFormInputProps {
   name: string;
   labelText: string;
   transformValues: (d: FileUploadResponse[]) => any;
+  transformFakeValue?: Function;
   size?: number; // bytes
   multiple?: boolean;
   className?: string;
@@ -27,6 +28,7 @@ interface UploadCustomFormInputProps {
  * @param {Boolean} multiple
  * @param {String} labelText
  * @param {String} size - bytes
+ * @param transformFakeValue - set value after on click to prevent unnecessary error display
  * @constructor
  */
 function UploadCustomFormInput({
@@ -36,12 +38,12 @@ function UploadCustomFormInput({
   multiple,
   labelText,
   size = 1048576,
+  transformFakeValue,
 }: UploadCustomFormInputProps) {
-  const [upload, { isLoading: isFileUploadLoading, data }] = useUploadMutation(
-    {},
-  );
+  const [upload, { isLoading: isFileUploadLoading, data, error }] =
+    useUploadMutation({});
 
-  const { setValue } = useFormContext();
+  const { setValue, setError } = useFormContext();
 
   /**
    * handles input file changes
@@ -49,7 +51,11 @@ function UploadCustomFormInput({
   const onChangePhotos = React.useCallback(
     (e: any) => {
       e.preventDefault();
-
+      if (transformFakeValue) {
+        setValue(name, transformFakeValue(), {
+          shouldValidate: true,
+        });
+      }
       const files = e.target.files;
       const formData = new FormData();
 
@@ -59,13 +65,13 @@ function UploadCustomFormInput({
       for (let i = 0; i < files.length; i++) {
         formData.append(files[i].name, files[i]);
       }
-
       // upload to server
       upload(formData);
     },
-    [upload],
+    [upload, transformFakeValue, setValue],
   );
 
+  // handle upload success
   useEffect(() => {
     if (data && !isFileUploadLoading) {
       setValue(name, transformValues(data.data), {
@@ -74,6 +80,25 @@ function UploadCustomFormInput({
       });
     }
   }, [setValue, data, name, isFileUploadLoading]);
+
+  // error handler
+  useEffect(() => {
+    if (error && !isFileUploadLoading) {
+      // @ts-ignore
+      if (error.statusCode === 400) {
+        setError(
+          name,
+          {
+            // @ts-ignore
+            message: error.details.message,
+          },
+          {
+            shouldFocus: true,
+          },
+        );
+      }
+    }
+  }, [error, setError, name]);
 
   return (
     <div className={cn(className)}>
@@ -106,4 +131,4 @@ function UploadCustomFormInput({
   );
 }
 
-export default UploadCustomFormInput;
+export default React.memo<UploadCustomFormInputProps>(UploadCustomFormInput);

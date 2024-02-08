@@ -17,6 +17,7 @@ API Includes the following endpoints.
 - **[GET] /users/login**
 - **[GET] /users/me**
 - **[POST(multipart/form-data)] /files/upload**
+- **[Get] /files/upload/configuration** - returns configuration(maxFileSize, maxFileCount etc.)
 
 ### Frontend
 
@@ -34,7 +35,7 @@ Here is a visual representation of the registration flow, below find explanation
 ![Registration Flow](./images/registration-flow.jpg)
 
 1. User enter user information (First Name, Last Name, Password, Confirm Password, Email) as a first step of the form
-2. While entering email, the front end does a request to the backend `/users/check-email-existence` to show the email is available or not, if its not available shows an error
+2. __THIS PHASE IS OPTIONAL AND NOT USED IN THE FRONT END IMPLEMENTATION__ - While entering email, the front end does a request to the backend `/users/check-email-existence` to show the email is available or not, if its not available shows an error
 3. As a second step of registration form, user asked to upload profile photos and avatar.
    When the user uploads the image as avatar or images as photos, the frontend does request to the `/files/upload`.
    - (3.1) The backend receives the images or image, passes through custom middleware to get blob from stream
