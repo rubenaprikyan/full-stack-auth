@@ -24,10 +24,6 @@ import { handleAuthenticationSuccess } from '@/lib/auth-service';
 
 import { LoginSchema } from './schemas';
 import { useLoginMutation } from '@/rtk-api/endpoints';
-import Authenticated from '@/components/Authenticated';
-import useUnmount from '@/hooks/use-unmount';
-import { Simulate } from 'react-dom/test-utils';
-import reset = Simulate.reset;
 
 type FormState = yup.InferType<typeof LoginSchema>;
 

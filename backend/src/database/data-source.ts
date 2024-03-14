@@ -20,7 +20,6 @@ class CustomDataSource {
     }
 
     CustomDataSource.instance = new DataSource({
-      // eslint-disable-next-line node/no-unsupported-features/es-syntax
       ...config,
       synchronize: true,
       logging: true,

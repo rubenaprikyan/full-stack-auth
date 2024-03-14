@@ -4,20 +4,20 @@ import { Context } from '../../types';
 import BaseController from '../BaseController';
 
 import { LoginViewModel, RegistrationViewModel } from './ViewModels';
-import UserService from '../../services/UserService';
 import { BadRequest } from '../../modules/exceptions';
 import AuthService from '../../services/AuthService';
 import { UnprocessableEntity } from '../../modules/exceptions/UnprocessableEntity';
 import { RegistrationDto } from './dtos/RegistrationDto';
 import { LoginDto } from './dtos/LoginDto';
 import { CheckEmailExistenceDto } from './dtos/CheckEmailexistenceDto';
+import ClientService from '../../services/ClientService';
 
 class UserController extends BaseController {
-  private userService: UserService;
+  private clientService: ClientService;
 
   constructor(private dataSource: DataSource) {
     super();
-    this.userService = new UserService(dataSource);
+    this.clientService = new ClientService(dataSource);
   }
 
   /**
@@ -25,7 +25,7 @@ class UserController extends BaseController {
    * @param ctx
    */
   public async getMe(ctx: Context) {
-    const user = await this.userService.getUserProfileById(ctx.req.session.user.id);
+    const user = await this.clientService.getUserProfileById(ctx.req.session.user.id);
 
     return this.view(user);
   }
@@ -35,7 +35,7 @@ class UserController extends BaseController {
    */
   public async login(ctx: Context): Promise<LoginViewModel> {
     const transformedBody = await LoginDto.validateAndReturn(ctx.req.body);
-    const user = await this.userService.findByEmail(transformedBody.email);
+    const user = await this.clientService.findByEmail(transformedBody.email);
 
     if (!user) {
       throw new BadRequest('Invalid Email or Password');
@@ -50,11 +50,11 @@ class UserController extends BaseController {
       throw new BadRequest('Invalid Email or Password');
     }
 
-    const authSession = this.userService.createAuthSession(user);
+    const authSession = this.clientService.createAuthSession(user);
     await this.dataSource.manager.save(authSession);
 
     const result = {
-      user: await this.userService.getUserProfileById(user.id),
+      user: await this.clientService.getUserProfileById(user.id),
       auth_token: authSession.token,
     };
 
@@ -79,32 +79,28 @@ class UserController extends BaseController {
       async manager => {
         try {
           // create user
-          const userEntity = this.userService.createUser(transformedBody.user);
-          const newUser = await manager.save(userEntity);
-
-          // create client
-          const clientEntity = await this.userService.createClient(
-            newUser,
+          // const userEntity = this.userService.createUser(transformedBody.user);
+          // const newUser = await manager.save(userEntity);
+          const clientEntity = await this.clientService.createClient(
+            transformedBody.user,
             transformedBody.avatarKey,
           );
+
           const newClient = await manager.save(clientEntity);
 
           // create auth.ts token
-          const authSessionEntity = this.userService.createAuthSession(newUser);
+          const authSessionEntity = this.clientService.createAuthSession(newClient);
           const newSession = await manager.save(authSessionEntity);
 
           // create photos
-          const photoEntities = await this.userService.createProfilePhotos(
+          const photoEntities = await this.clientService.createProfilePhotos(
             transformedBody.photos,
             newClient,
           );
           await manager.save(photoEntities);
 
-          newUser.client = newClient;
-          await manager.save(newUser);
-
           return {
-            userId: newUser.id,
+            userId: newClient.id,
             auth_token: newSession.token,
           };
         } catch (error) {
@@ -120,7 +116,7 @@ class UserController extends BaseController {
 
     return this.view({
       // TODO change to runtime filtering without database query
-      user: await this.userService.getUserProfileById(userId),
+      user: await this.clientService.getUserProfileById(userId),
       auth_token: auth_token,
     });
   }
@@ -130,14 +126,14 @@ class UserController extends BaseController {
    * @param ctx
    */
   public async logout(ctx: Context) {
-    await this.userService.removeAuthSession(ctx.req.session.token);
+    await this.clientService.removeAuthSession(ctx.req.session.token);
     return this.view(null);
   }
 
   /** handles check-email-existence endpoint */
   public async checkEmailExistence(ctx: Context) {
     const transformedBody = await CheckEmailExistenceDto.validateAndReturn(ctx.req.body);
-    const user = await this.userService.findByEmail(transformedBody.email);
+    const user = await this.clientService.findByEmail(transformedBody.email);
 
     return this.view(!!user);
   }

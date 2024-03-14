@@ -19,10 +19,8 @@ export interface UserProfile extends BaseEntity {
   lastName: string;
   active: boolean;
   role: string;
-  client: {
-    avatar: string;
-    photos: Photo[];
-  };
+  avatar: string;
+  photos: Photo[];
 }
 
 /**

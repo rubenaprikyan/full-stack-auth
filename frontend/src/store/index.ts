@@ -14,13 +14,13 @@ const store = configureStore({
   reducer: combineReducers({
     [api.reducerPath]: api.reducer,
   }),
+  devTools: true,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(api.middleware)
       .concat(rtkQueryErrorMiddleware),
 });
 
-// export type AppDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,

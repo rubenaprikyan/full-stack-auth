@@ -12,16 +12,14 @@ export type RegistrationViewModel = BaseViewModel<{
 }>;
 
 export interface UserWithClientAndPhotos {
-  id: string;
+  id: number;
   email: string;
   firstName: string;
   lastName: string;
   createdAt: Date;
   updatedAt: Date;
-  client: {
-    avatar: string;
-    photos: Photo[];
-  };
+  photos: Photo[];
+  avatar: string;
 }
 
 export type UserProfileViewModel = BaseViewModel<UserWithClientAndPhotos>;

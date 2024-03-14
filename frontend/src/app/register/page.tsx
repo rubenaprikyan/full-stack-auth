@@ -26,6 +26,7 @@ import UserInfoStep from '@/app/register/components/UserInfoStep';
 import UploadPictureStep from '@/app/register/components/UploadPictureStep';
 import { cn } from '@/lib/utils';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 type FormState = yup.InferType<typeof RegistrationSchema>;
 
@@ -56,15 +57,20 @@ function RegistrationFormHeader() {
 export default function Register() {
   const [step, setStep] = React.useState<number>(1);
   const [register, { isLoading, error, data, reset }] = useRegisterMutation();
-
   const form = useForm<FormState>({
     mode: 'onTouched',
     resolver: yupResolver(RegistrationSchema),
     defaultValues: formDefaultValues,
   });
+  const { toast } = useToast();
 
   useEffect(() => {
     if (!error && data) {
+      toast({
+        type: 'foreground',
+        title: 'Congrats! Your account is created',
+      });
+
       handleAuthenticationSuccess(data);
     }
   }, [error, data]);
