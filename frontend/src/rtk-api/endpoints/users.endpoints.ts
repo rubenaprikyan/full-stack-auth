@@ -5,8 +5,6 @@ import {
   RegistrationQueryBody,
   RegistrationViewModel,
   UserProfileViewModel,
-  CheckEmailViewModel,
-  CheckEmailRequestBody,
   LoginViewModel,
   LoginQueryBody,
 } from '../models/users.models';

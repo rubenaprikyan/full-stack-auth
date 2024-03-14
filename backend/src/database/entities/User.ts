@@ -1,18 +1,17 @@
 import {
   Entity,
   Column,
-  OneToOne,
-  JoinColumn,
   OneToMany,
   BeforeInsert,
   Unique,
+  TableInheritance,
 } from 'typeorm';
 import { UserAuthSession } from './UserAuthSession';
-import { Client } from './Client';
 import { BaseEntity } from './Base';
 import { Length } from 'class-validator';
 
 @Entity('users')
+@TableInheritance({ column: { type: 'varchar', name: 'type' } })
 @Unique('email_unique', ['email'])
 export class User extends BaseEntity {
   @Column({
@@ -64,10 +63,6 @@ export class User extends BaseEntity {
   /**
    * Associations
    */
-  @OneToOne(() => Client, (client: Client) => client.user)
-  @JoinColumn()
-  client: Client;
-
   @OneToMany(() => UserAuthSession, authSession => authSession.user, {
     cascade: true,
     onDelete: 'CASCADE',

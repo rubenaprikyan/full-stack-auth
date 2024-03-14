@@ -3,12 +3,12 @@ import { NextFunction, Request, Response } from 'express';
 import CustomDataSource from '../database/data-source';
 
 import AuthService, { Payload } from '../services/AuthService';
-import UserService from '../services/UserService';
+import ClientService from '../services/ClientService';
 
 import { dbConfig } from '../config';
 import { AuthorizationError } from '../modules/exceptions/AuthorizationError';
 
-const userService = new UserService(CustomDataSource.getInstance(dbConfig));
+const userService = new ClientService(CustomDataSource.getInstance(dbConfig));
 
 /**
  * Extracts token from request headers

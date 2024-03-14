@@ -10,9 +10,7 @@ export default function Profile() {
   return (
     <div className="mt-20 flex flex flex-col items-center justify-start gap-3">
       <ProfileInfo user={data?.data} isLoading={isLoading} error={error} />
-      {data && data.data.client.photos && (
-        <ImageSlider images={data.data.client.photos} />
-      )}
+      {data && data.data.photos && <ImageSlider images={data.data.photos} />}
     </div>
   );
 }

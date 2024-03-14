@@ -23,10 +23,7 @@ function ProfileInfo({ user, isLoading, error }: ProfileInfoProps) {
               <div className="flex justify-between">
                 <div className="mb-2 flex items-center gap-2">
                   <Avatar className="h-20 w-20">
-                    <AvatarImage
-                      src={user.client.avatar}
-                      alt={user.firstName}
-                    />
+                    <AvatarImage src={user.avatar} alt={user.firstName} />
                     <AvatarFallback>{user.firstName}</AvatarFallback>
                   </Avatar>
                   <div>
